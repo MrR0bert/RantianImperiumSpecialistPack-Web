@@ -1,138 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conditional Form Builder</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-  <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-xl">
-    <h1 class="text-2xl font-bold mb-4">Rantian Imperium Specialists Pack Character request</h1>
-    <div id="form"></div>
-    <div id="output" class="hidden mt-6">
-      <h2 class="text-xl font-semibold mb-2">Result:</h2>
-      <textarea id="resultText" class="w-full h-40 p-2 border rounded bg-gray-50"></textarea>
-      <button onclick="copyToClipboard()" class="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Copy to Clipboard</button>
-      <p id="copyStatus" class="text-sm mt-2 text-green-600 hidden">Copied!</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rantian Imperium Specialists Pack Character request</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div
+      x-data="formApp"
+      class="bg-white p-8 rounded-xl shadow-md w-full max-w-xl"
+    >
+      <h1 class="text-2xl font-bold mb-4">Rantian Imperium Specialists Pack Character request</h1>
+
+      <!-- Username Input -->
+      <template x-if="step === 'username'">
+        <div>
+          <label class="block mb-2 font-medium">Enter your username:</label>
+          <input
+            type="text"
+            x-model="username"
+            class="border p-2 w-full mb-4 rounded"
+          />
+          <button
+            @click="startForm"
+            class="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Start
+          </button>
+        </div>
+      </template>
+
+      <!-- Question Block -->
+      <template x-if="step === 'form'">
+        <div>
+          <p class="mb-4 text-lg font-semibold" x-text="currentQuestion.text"></p>
+          <template x-for="opt in currentQuestion.options" :key="opt.label">
+            <button
+              class="block w-full text-left bg-gray-200 hover:bg-green-200 px-4 py-2 mb-2 rounded"
+              @click="selectOption(opt)"
+              x-text="opt.label"
+            ></button>
+          </template>
+        </div>
+      </template>
+
+      <!-- Output Block -->
+      <template x-if="step === 'output'">
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold mb-2">Result:</h2>
+          <textarea
+            x-ref="resultText"
+            x-text="result"
+            class="w-full h-40 p-2 border rounded bg-gray-50"
+          ></textarea>
+          <button
+            @click="copyResult"
+            class="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            Copy to Clipboard
+          </button>
+          <p
+            x-show="copied"
+            x-transition
+            class="text-sm mt-2 text-green-600"
+          >
+            Copied!
+          </p>
+        </div>
+      </template>
     </div>
-  </div>
 
-  <script>
-    const questions = {
-      q1: {
-        id: 'q1',
-        text: 'Do you want to continue?',
-        options: [
-          { label: 'Yes', next: 'q2' },
-          { label: 'No', next: 'q6' },
-        ]
-      },
-      q2: {
-        id: 'q2',
-        text: 'Pick your role:',
-        options: [
-          { label: 'Admin', next: 'q3' },
-          { label: 'User', next: 'q3' },
-        ]
-      },
-      q3: {
-        id: 'q3',
-        text: 'Receive updates?',
-        options: [
-          { label: 'Yes', next: 'end' },
-          { label: 'No', next: 'end' },
-        ]
-      },
-      q6: {
-        id: 'q6',
-        text: 'Why did you stop?',
-        options: [
-          { label: 'Changed mind', next: 'end' },
-          { label: 'Not interested', next: 'end' },
-        ]
-      }
-    };
+    <script>
+      document.addEventListener('alpine:init', () => {
+        Alpine.data('formApp', () => ({
+          step: 'username',
+          username: '',
+          currentQuestionId: null,
+          questions: {
+            q1: {
+              text: 'Do you want to continue?',
+              options: [
+                { label: 'Yes', next: 'q2' },
+                { label: 'No', next: 'q6' },
+              ],
+            },
+            q2: {
+              text: 'Pick your role:',
+              options: [
+                { label: 'Admin', next: 'q3' },
+                { label: 'User', next: 'q3' },
+              ],
+            },
+            q3: {
+              text: 'Receive updates?',
+              options: [
+                { label: 'Yes', next: 'end' },
+                { label: 'No', next: 'end' },
+              ],
+            },
+            q6: {
+              text: 'Why did you stop?',
+              options: [
+                { label: 'Changed mind', next: 'end' },
+                { label: 'Not interested', next: 'end' },
+              ],
+            },
+          },
+          answers: [],
+          copied: false,
 
-    const answers = [];
-    let username = '';
-    let currentQuestion = null;
+          get currentQuestion() {
+            return this.questions[this.currentQuestionId];
+          },
 
-    const formDiv = document.getElementById('form');
-    const outputDiv = document.getElementById('output');
-    const resultText = document.getElementById('resultText');
-    const copyStatus = document.getElementById('copyStatus');
+          startForm() {
+            if (!this.username.trim()) return;
+            this.currentQuestionId = 'q1';
+            this.step = 'form';
+          },
 
-    function startForm() {
-      formDiv.innerHTML = `
-        <label class="block mb-2 font-medium">Enter your username:</label>
-        <input type="text" id="usernameInput" class="border p-2 w-full mb-4 rounded" />
-        <button onclick="submitUsername()" class="bg-blue-500 text-white px-4 py-2 rounded">Start</button>
-      `;
-    }
+          selectOption(opt) {
+            this.answers.push({
+              question: this.currentQuestion.text,
+              options: this.currentQuestion.options,
+              selected: opt.label,
+            });
 
-    function submitUsername() {
-      const input = document.getElementById('usernameInput');
-      if (input.value.trim()) {
-        username = input.value.trim();
-        currentQuestion = 'q1';
-        showQuestion();
-      }
-    }
+            if (opt.next === 'end') {
+              this.step = 'output';
+            } else {
+              this.currentQuestionId = opt.next;
+            }
+          },
 
-    function showQuestion() {
-      const q = questions[currentQuestion];
-      formDiv.innerHTML = `<p class="mb-4 text-lg font-semibold">${q.text}</p>`;
-      q.options.forEach((opt, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'block w-full text-left bg-gray-200 hover:bg-green-200 px-4 py-2 mb-2 rounded';
-        btn.innerText = opt.label;
-        btn.onclick = () => handleAnswer(q, opt);
-        formDiv.appendChild(btn);
+          get result() {
+            let output = '```\n' + this.username + '\n\n';
+            this.answers.forEach((a) => {
+              output += `${a.question}\n`;
+              a.options.forEach((opt) => {
+                output += `${opt.label === a.selected ? '✅' : '⬜'} ${opt.label}\n`;
+              });
+              output += '\n';
+            });
+            output += '```';
+            return output;
+          },
+
+          copyResult() {
+            navigator.clipboard.writeText(this.result).then(() => {
+              this.copied = true;
+              setTimeout(() => (this.copied = false), 2000);
+            });
+          },
+        }));
       });
-    }
-
-    function handleAnswer(q, opt) {
-      if (!opt || !opt.label) return; // safeguard in case of invalid input
-
-      answers.push({
-        question: q.text,
-        options: q.options,
-        selected: opt.label
-      });
-      if (opt.next === 'end') {
-        displayResult();
-      } else {
-        currentQuestion = opt.next;
-        showQuestion();
-      }
-    }
-
-    function displayResult() {
-      formDiv.classList.add('hidden');
-      outputDiv.classList.remove('hidden');
-      let result = "```\n" + username + "\n\n";
-      answers.forEach(a => {
-        result += `${a.question}\n`;
-        a.options.forEach(opt => {
-          result += `${opt.label === a.selected ? '✅' : '⬜'} ${opt.label}\n`;
-        });
-        result += `\n`;
-      });
-      result += "```";
-      resultText.value = result;
-    }
-
-    function copyToClipboard() {
-      navigator.clipboard.writeText(resultText.value).then(() => {
-        copyStatus.classList.remove('hidden');
-        setTimeout(() => {
-          copyStatus.classList.add('hidden');
-        }, 2000);
-      });
-    }
-
-    startForm();
-  </script>
-</body>
+    </script>
+  </body>
 </html>
