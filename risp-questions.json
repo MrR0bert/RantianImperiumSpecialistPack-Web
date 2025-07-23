@@ -1,0 +1,30 @@
+{
+  "q1": {
+    "text": "Do you want to continue?",
+    "options": [
+      { "label": "Yes", "next": "q2" },
+      { "label": "No", "next": "q6" }
+    ]
+  },
+  "q2": {
+    "text": "Pick your role:",
+    "options": [
+      { "label": "Admin", "next": "q3" },
+      { "label": "User", "next": "q3" }
+    ]
+  },
+  "q3": {
+    "text": "Receive updates?",
+    "options": [
+      { "label": "Yes", "next": "end" },
+      { "label": "No", "next": "end" }
+    ]
+  },
+  "q6": {
+    "text": "Why did you stop?",
+    "options": [
+      { "label": "Changed mind", "next": "end" },
+      { "label": "Not interested", "next": "end" }
+    ]
+  }
+}
