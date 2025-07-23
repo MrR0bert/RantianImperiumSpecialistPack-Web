@@ -3,18 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rantian Imperium Specialists Pack Character request</title>
+    <title>Conditional Form Builder</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>
   <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <div
       x-data="formApp"
+      x-init="init"
       class="bg-white p-8 rounded-xl shadow-md w-full max-w-xl"
     >
-      <h1 class="text-2xl font-bold mb-4">Rantian Imperium Specialists Pack Character request</h1>
+      <h1 class="text-2xl font-bold mb-4">Custom Form</h1>
 
-      <!-- Username Input -->
+      <!-- Username Step -->
       <template x-if="step === 'username'">
         <div>
           <label class="block mb-2 font-medium">Enter your username:</label>
@@ -22,18 +23,20 @@
             type="text"
             x-model="username"
             class="border p-2 w-full mb-4 rounded"
+            placeholder="e.g. discordUser123"
           />
           <button
             @click="startForm"
-            class="bg-blue-500 text-white px-4 py-2 rounded"
+            class="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+            :disabled="!username.trim()"
           >
             Start
           </button>
         </div>
       </template>
 
-      <!-- Question Block -->
-      <template x-if="step === 'form'">
+      <!-- Question Step -->
+      <template x-if="step === 'form' && currentQuestion">
         <div>
           <p class="mb-4 text-lg font-semibold" x-text="currentQuestion.text"></p>
           <template x-for="opt in currentQuestion.options" :key="opt.label">
@@ -46,13 +49,14 @@
         </div>
       </template>
 
-      <!-- Output Block -->
+      <!-- Output Step -->
       <template x-if="step === 'output'">
         <div class="mt-6">
           <h2 class="text-xl font-semibold mb-2">Result:</h2>
           <textarea
             x-ref="resultText"
             x-text="result"
+            readonly
             class="w-full h-40 p-2 border rounded bg-gray-50"
           ></textarea>
           <button
@@ -78,38 +82,18 @@
           step: 'username',
           username: '',
           currentQuestionId: null,
-          questions: {
-            q1: {
-              text: 'Do you want to continue?',
-              options: [
-                { label: 'Yes', next: 'q2' },
-                { label: 'No', next: 'q6' },
-              ],
-            },
-            q2: {
-              text: 'Pick your role:',
-              options: [
-                { label: 'Admin', next: 'q3' },
-                { label: 'User', next: 'q3' },
-              ],
-            },
-            q3: {
-              text: 'Receive updates?',
-              options: [
-                { label: 'Yes', next: 'end' },
-                { label: 'No', next: 'end' },
-              ],
-            },
-            q6: {
-              text: 'Why did you stop?',
-              options: [
-                { label: 'Changed mind', next: 'end' },
-                { label: 'Not interested', next: 'end' },
-              ],
-            },
-          },
+          questions: {},
           answers: [],
           copied: false,
+
+          async init() {
+            try {
+              const res = await fetch('risp-questions.json');
+              this.questions = await res.json();
+            } catch (error) {
+              console.error('Failed to load questions:', error);
+            }
+          },
 
           get currentQuestion() {
             return this.questions[this.currentQuestionId];
