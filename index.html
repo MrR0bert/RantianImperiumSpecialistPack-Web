@@ -1,98 +1,118 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" :class="{ 'dark': darkMode }" x-data="mainApp()" x-init="init()" x-cloak>
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Specialist Request Form</title>
+  <title>Conditional Form - Anno 1800 Specialists</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
   <style>
-    [x-cloak] { display: none !important; }
+    /* Scrollbar styling for dark mode */
+    html.dark::-webkit-scrollbar {
+      width: 12px;
+    }
+    html.dark::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    html.dark::-webkit-scrollbar-thumb {
+      background-color: #475569;
+      border-radius: 6px;
+      border: 3px solid #1e293b;
+    }
   </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
-
+<body
+  x-data="formApp()"
+  :class="{ 'dark': darkMode }"
+  class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col"
+>
   <!-- Navigation -->
-  <nav class="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
-    <div class="flex space-x-6">
-      <a href="index.html" class="font-semibold hover:underline" :class="{'underline': page === 'form'}" @click.prevent="navigate('form')">Form</a>
-      <a href="gallery.html" class="font-semibold hover:underline" :class="{'underline': page === 'gallery'}" @click.prevent="navigate('gallery')">Gallery</a>
+  <nav class="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center space-x-4">
+      <a href="index.html" class="font-bold text-lg hover:text-blue-500 dark:hover:text-blue-400">Form</a>
+      <a href="gallery.html" class="font-bold text-lg hover:text-blue-500 dark:hover:text-blue-400">Gallery</a>
     </div>
+    <!-- Dark/Light mode toggle icon -->
     <button
       @click="toggleDarkMode"
-      class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-      :aria-label="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+      class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+      aria-label="Toggle dark mode"
+      title="Toggle dark mode"
     >
       <template x-if="darkMode">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 3v1m0 16v1m8.485-8.485l-.707.707M4.222 19.778l-.707.707m15.556-15.556l-.707.707M4.222 4.222l-.707.707M21 12h-1M4 12H3" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 3v1m0 16v1m8.66-9H21m-18 0H3m15.36 6.36l-.7-.7m-10.92 0l-.7.7m10.92-10.92l-.7.7m-10.92 0l-.7-.7M12 7a5 5 0 000 10 5 5 0 000-10z"
+          />
         </svg>
       </template>
       <template x-if="!darkMode">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="currentColor" viewBox="0 0 20 20" >
-          <path d="M10 2a8 8 0 1 0 8 8 7.99 7.99 0 0 1-8-8z" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" stroke="none">
+          <path
+            d="M21.752 15.002A9.718 9.718 0 0112 21.75a9.75 9.75 0 01-9.75-9.75c0-4.952 3.687-9.007 8.479-9.716a.75.75 0 01.988.987C12.67 3.298 12 4.543 12 6a6 6 0 006 6c1.457 0 2.702-.67 3.742-1.735a.75.75 0 01.01 4.737z"
+          />
         </svg>
       </template>
     </button>
   </nav>
 
-  <!-- Main content container -->
-  <main class="flex-grow p-6 max-w-3xl mx-auto w-full" x-show="page === 'form'">
-
-    <h1 class="text-3xl font-bold mb-6">Specialist Request Form</h1>
+  <!-- Main content -->
+  <main class="flex-grow container mx-auto px-4 py-8 max-w-xl">
+    <h1 class="text-3xl font-bold mb-6">Add Your Specialist</h1>
 
     <!-- Username input step -->
     <template x-if="step === 'username'">
       <div>
-        <label for="username" class="block mb-2 font-medium">Enter your username:</label>
+        <label class="block mb-2 font-semibold">Enter your username:</label>
         <input
-          id="username"
           type="text"
           x-model="username"
-          class="border rounded p-2 w-full mb-4 dark:bg-gray-700 dark:border-gray-600"
-          autocomplete="off"
           placeholder="Your Discord username"
+          class="border border-gray-300 rounded p-2 w-full mb-4 dark:bg-gray-700 dark:border-gray-600"
         />
         <button
-          @click="startForm"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-        >Start</button>
+          @click="startForm()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
+          :disabled="!username.trim()"
+        >
+          Start
+        </button>
       </div>
     </template>
 
-    <!-- Form questions step -->
+    <!-- Form question step -->
     <template x-if="step === 'form'">
       <div>
         <p class="mb-4 text-lg font-semibold" x-text="currentQuestion.text"></p>
 
-        <!-- Multiple choice -->
+        <!-- Choice question -->
         <template x-if="currentQuestion.type === 'choice'">
-          <template x-for="opt in currentQuestion.options" :key="opt.label">
+          <template x-for="(opt, idx) in currentQuestion.options" :key="idx">
             <button
-              @click="selectOption(opt)"
-              class="block w-full text-left bg-gray-200 dark:bg-gray-700 hover:bg-green-200 dark:hover:bg-green-600 px-4 py-2 mb-2 rounded"
+              class="block w-full text-left bg-gray-200 hover:bg-green-200 dark:bg-gray-700 dark:hover:bg-green-700 px-4 py-2 mb-2 rounded"
+              @click="selectOption(opt.label, opt.next)"
               x-text="opt.label"
             ></button>
           </template>
         </template>
 
-        <!-- Text input -->
+        <!-- Input question -->
         <template x-if="currentQuestion.type === 'input'">
           <input
             type="text"
             x-model="inputValue"
-            @keydown.enter.prevent="submitInput()"
-            class="border rounded p-2 w-full mb-4 dark:bg-gray-700 dark:border-gray-600"
-            placeholder="Type your answer and press Enter"
-            autocomplete="off"
+            :placeholder="currentQuestion.placeholder || 'Type your answer...'"
+            class="border border-gray-300 rounded p-2 w-full mb-4 dark:bg-gray-700 dark:border-gray-600"
           />
           <button
+            @click="selectInput()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
             :disabled="!inputValue.trim()"
-            @click="submitInput"
-            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded disabled:opacity-50"
-          >Submit</button>
+          >
+            Next
+          </button>
         </template>
       </div>
     </template>
@@ -100,59 +120,55 @@
     <!-- Output step -->
     <template x-if="step === 'output'">
       <div>
-        <h2 class="text-2xl font-semibold mb-2">Generated Request Text</h2>
+        <h2 class="text-xl font-semibold mb-2">Result</h2>
         <textarea
           readonly
+          class="w-full h-48 p-2 border rounded bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-sm font-mono"
           x-text="result"
-          class="w-full h-48 p-3 rounded border dark:bg-gray-800 dark:border-gray-700 font-mono whitespace-pre-wrap"
+          x-ref="resultText"
         ></textarea>
-        <button
-          @click="copyResult"
-          class="mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-        >
-          Copy to Clipboard
-        </button>
+        <div class="mt-3 flex space-x-2">
+          <button
+            @click="copyResult()"
+            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+          >
+            Copy to Clipboard
+          </button>
+          <button
+            @click="resetForm()"
+            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"
+          >
+            Restart
+          </button>
+        </div>
         <p
           x-show="copied"
           x-transition
-          class="text-green-400 mt-2 font-semibold"
+          class="text-green-500 mt-2 font-semibold"
         >Copied!</p>
-        <button
-          @click="resetForm"
-          class="mt-4 text-blue-600 underline"
-        >Start Over</button>
       </div>
     </template>
-
-  </main>
-
-  <!-- Placeholder for gallery page content -->
-  <main class="flex-grow p-6 max-w-3xl mx-auto w-full" x-show="page === 'gallery'" x-cloak>
-    <h1 class="text-3xl font-bold mb-6">Gallery (coming soon!)</h1>
-    <p>Gallery page content will be added here.</p>
   </main>
 
   <script>
-    function mainApp() {
+    function formApp() {
       return {
-        page: 'form',  // 'form' or 'gallery'
         darkMode: false,
-
-        step: 'username', // username, form, output
+        step: 'username',
         username: '',
+        questions: {},
         currentQuestionId: null,
         inputValue: '',
         answers: [],
         copied: false,
-        questions: {},
 
         async loadQuestions() {
           try {
             const res = await fetch('risp-questions.json');
             this.questions = await res.json();
           } catch (e) {
-            alert('Failed to load risp-questions.json');
-            console.error(e);
+            console.error('Failed to load questions:', e);
+            this.questions = {};
           }
         },
 
@@ -160,72 +176,49 @@
           return this.questions[this.currentQuestionId] || {};
         },
 
-        navigate(target) {
-          this.page = target;
-          if (target === 'form') {
-            this.resetForm();
-          }
-        },
-
-        toggleDarkMode() {
-          this.darkMode = !this.darkMode;
-          if (this.darkMode) {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('darkMode', 'true');
-          } else {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('darkMode', 'false');
-          }
-        },
-
         startForm() {
-          if (!this.username.trim()) {
-            alert('Please enter your username.');
-            return;
-          }
+          if (!this.username.trim()) return;
           this.answers = [];
           this.inputValue = '';
           this.currentQuestionId = 'q1';
           this.step = 'form';
         },
 
-        selectOption(option) {
+        selectOption(label, next) {
           this.answers.push({
             question: this.currentQuestion.text,
-            options: this.currentQuestion.options || [],
-            selected: option.label,
+            options: this.currentQuestion.options,
+            selected: label,
+            type: 'choice',
           });
-
-          if (option.next === 'end') {
+          if (next === 'end') {
             this.step = 'output';
           } else {
-            this.currentQuestionId = option.next;
-            this.inputValue = '';
+            this.currentQuestionId = next;
           }
         },
 
-        submitInput() {
+        selectInput() {
           if (!this.inputValue.trim()) return;
           this.answers.push({
             question: this.currentQuestion.text,
-            options: null,
             selected: this.inputValue.trim(),
+            type: 'input',
           });
-
+          this.inputValue = '';
           if (this.currentQuestion.next === 'end') {
             this.step = 'output';
           } else {
             this.currentQuestionId = this.currentQuestion.next;
-            this.inputValue = '';
           }
         },
 
         get result() {
           let output = '```\n' + this.username + '\n\n';
-          this.answers.forEach(a => {
-            output += a.question + '\n';
-            if (a.options) {
-              a.options.forEach(opt => {
+          this.answers.forEach((a) => {
+            output += `${a.question}\n`;
+            if (a.type === 'choice' && a.options) {
+              a.options.forEach((opt) => {
                 output += (opt.label === a.selected ? '✅' : '⬜') + ' ' + opt.label + '\n';
               });
             } else {
@@ -252,17 +245,26 @@
           this.inputValue = '';
         },
 
-        init() {
-          // Load dark mode preference
-          this.darkMode = localStorage.getItem('darkMode') === 'true';
+        toggleDarkMode() {
+          this.darkMode = !this.darkMode;
           if (this.darkMode) document.documentElement.classList.add('dark');
           else document.documentElement.classList.remove('dark');
+          localStorage.setItem('darkMode', this.darkMode);
+        },
 
-          // Load questions from external JSON
+        init() {
+          // Load dark mode from localStorage
+          this.darkMode = localStorage.getItem('darkMode') === 'true';
+          if (this.darkMode) document.documentElement.classList.add('dark');
+
           this.loadQuestions();
         },
-      }
+      };
     }
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('formApp', formApp);
+    });
   </script>
 </body>
 </html>
