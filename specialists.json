@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Captain Ewald",
+    "image": "https://via.placeholder.com/300x150?text=Captain+Ewald",
+    "description": "A retired admiral who boosts harbor defenses.",
+    "stats": ["+30% Harbor Defense", "-10% Ship Maintenance Cost"]
+  },
+  {
+    "name": "Professor ZinZin",
+    "image": "https://via.placeholder.com/300x150?text=Professor+ZinZin",
+    "description": "Increases research speed in your academy.",
+    "stats": ["+50% Research Speed", "+10% Happiness"]
+  }
+]
