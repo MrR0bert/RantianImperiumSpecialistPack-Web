@@ -27,4 +27,99 @@
           </svg>
         </template>
         <template x-if="theme === 'light'">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21.752 15.002A9.718 9.718 0 0112.75 21a9.75 9.75 0 010-19.5 9.718 9.718 0 019.002 5.748 7.5 7.5 0 000 7.754z" />
+          </svg>
+        </template>
+      </button>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-6 text-center">Anno 1800 Specialists Gallery</h1>
+
+    <div x-data="galleryApp" x-init="initGallery()" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <template x-for="specialist in specialists" :key="specialist.id">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 relative group hover:shadow-xl transition-shadow duration-300">
+          <!-- Stylized Card Header -->
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold" x-text="specialist.name"></h2>
+            <div
+              class="text-xs uppercase tracking-wide px-2 py-1 rounded bg-yellow-400 text-yellow-900 font-bold select-none"
+              x-text="specialist.rarity"
+              :class="{
+                'bg-yellow-400 text-yellow-900': specialist.rarity === 'Rare',
+                'bg-purple-600 text-purple-100': specialist.rarity === 'Epic',
+                'bg-red-600 text-red-100': specialist.rarity === 'Legendary',
+              }"
+            ></div>
+          </div>
+
+          <!-- Image placeholder with decorative frame -->
+          <div
+            class="relative h-40 w-full rounded-lg overflow-hidden border-4 border-gray-300 dark:border-gray-600"
+            style="background: linear-gradient(135deg, #bdb76b 0%, #555 100%)"
+          >
+            <img
+              :src="specialist.image"
+              :alt="specialist.name"
+              class="object-contain h-full w-full"
+              loading="lazy"
+            />
+            <div
+              class="absolute inset-0 ring-4 ring-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none"
+              :class="{
+                'ring-yellow-400': specialist.rarity === 'Rare',
+                'ring-purple-600': specialist.rarity === 'Epic',
+                'ring-red-600': specialist.rarity === 'Legendary',
+              }"
+            ></div>
+          </div>
+
+          <!-- Description -->
+          <p class="mt-4 text-gray-700 dark:text-gray-300 min-h-[4.5rem]" x-text="specialist.description"></p>
+
+          <!-- Specialty -->
+          <div
+            class="absolute top-3 right-3 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full px-3 py-1 text-xs font-semibold"
+            x-text="specialist.specialty"
+          ></div>
+        </div>
+      </template>
+
+      <template x-if="specialists.length === 0">
+        <p class="col-span-full text-center text-gray-500 dark:text-gray-400">No specialists found.</p>
+      </template>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('siteData', () => ({
+        theme: localStorage.getItem('theme') || 'light',
+        init() {
+          document.documentElement.classList.toggle('dark', this.theme === 'dark');
+        },
+        toggleTheme() {
+          this.theme = this.theme === 'dark' ? 'light' : 'dark';
+          localStorage.setItem('theme', this.theme);
+          document.documentElement.classList.toggle('dark', this.theme === 'dark');
+        }
+      }));
+
+      Alpine.data('galleryApp', () => ({
+        specialists: [],
+
+        async initGallery() {
+          try {
+            const res = await fetch('specialists.json');
+            this.specialists = await res.json();
+          } catch (e) {
+            console.error('Failed to load specialists:', e);
+          }
+        }
+      }));
+    });
+  </script>
+</body>
+</html>
