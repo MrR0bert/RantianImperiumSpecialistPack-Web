@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" x-data="siteData" x-init="init()" :class="theme">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gallery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+  <div class="max-w-4xl mx-auto p-4">
+    <!-- Navbar -->
+    <div class="flex justify-between items-center mb-6">
+      <div class="flex space-x-4">
+        <a href="index.html" class="hover:underline">Form</a>
+        <a href="gallery.html" class="font-bold underline">Gallery</a>
+      </div>
+      <button @click="toggleTheme" class="w-6 h-6 text-gray-800 dark:text-gray-200" aria-label="Toggle dark mode">
+        <template x-if="theme === 'dark'">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 3v1.5m0 15V21m9-9h-1.5M4.5 12H3m15.364 6.364l-1.061-1.061M6.697 6.697l-1.061-1.061m12.728 0l-1.061 1.061M6.697 17.303l-1.061 1.061M12 6.75A5.25 5.25 0 1117.25 12 5.25 5.25 0 0112 6.75z" />
+          </svg>
+        </template>
+        <template x-if="theme === 'light'">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1
