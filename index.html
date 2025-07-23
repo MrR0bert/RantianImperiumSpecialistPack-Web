@@ -1,194 +1,175 @@
 <!DOCTYPE html>
 <html lang="en" x-data="siteData" x-init="init()" :class="theme">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Custom Form & Gallery</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-      };
-    </script>
-    <script src="https://unpkg.com/@tabler/icons-webfont"></script>
-  </head>
-  <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
-    <div class="max-w-4xl mx-auto p-4">
-      <!-- Navbar -->
-      <div class="flex justify-between items-center mb-6">
-        <div class="flex space-x-4">
-          <button @click="page = 'form'" :class="{ 'font-bold underline': page === 'form' }">Form</button>
-          <button @click="page = 'gallery'" :class="{ 'font-bold underline': page === 'gallery' }">Gallery</button>
-        </div>
-        <button @click="toggleTheme" class="text-xl">
-          <i :class="theme === 'dark' ? 'ti ti-sun' : 'ti ti-moon'" class="transition duration-200"></i>
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Custom Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+  <div class="max-w-4xl mx-auto p-4">
+    <!-- Navbar -->
+    <div class="flex justify-between items-center mb-6">
+      <div class="flex space-x-4">
+        <a href="index.html" class="font-bold underline">Form</a>
+        <a href="gallery.html" class="hover:underline">Gallery</a>
       </div>
-
-      <!-- Form Page -->
-      <div x-show="page === 'form'" x-data="formApp" x-init="initForm()">
-        <h1 class="text-2xl font-bold mb-4">Custom Form</h1>
-
-        <!-- Username Input -->
-        <template x-if="step === 'username'">
-          <div>
-            <label class="block mb-2 font-medium">Enter your username:</label>
-            <input
-              type="text"
-              x-model="username"
-              class="border p-2 w-full mb-4 rounded bg-white dark:bg-gray-800 dark:border-gray-700"
-              placeholder="e.g. discordUser123"
-            />
-            <button
-              @click="startForm"
-              class="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-              :disabled="!username.trim()"
-            >
-              Start
-            </button>
-          </div>
+      <button @click="toggleTheme" class="w-6 h-6 text-gray-800 dark:text-gray-200" aria-label="Toggle dark mode">
+        <template x-if="theme === 'dark'">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 3v1.5m0 15V21m9-9h-1.5M4.5 12H3m15.364 6.364l-1.061-1.061M6.697 6.697l-1.061-1.061m12.728 0l-1.061 1.061M6.697 17.303l-1.061 1.061M12 6.75A5.25 5.25 0 1117.25 12 5.25 5.25 0 0112 6.75z" />
+          </svg>
         </template>
-
-        <!-- Question Block -->
-        <template x-if="step === 'form' && currentQuestion">
-          <div>
-            <p class="mb-4 text-lg font-semibold" x-text="currentQuestion.text"></p>
-            <template x-for="opt in currentQuestion.options" :key="opt.label">
-              <button
-                class="block w-full text-left bg-gray-200 dark:bg-gray-700 hover:bg-green-200 dark:hover:bg-green-700 px-4 py-2 mb-2 rounded"
-                @click="selectOption(opt)"
-                x-text="opt.label"
-              ></button>
-            </template>
-          </div>
+        <template x-if="theme === 'light'">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21.752 15.002A9.718 9.718 0 0112.75 21a9.75 9.75 0 010-19.5 9.718 9.718 0 019.002 5.748 7.5 7.5 0 000 7.754z" />
+          </svg>
         </template>
-
-        <!-- Output Block -->
-        <template x-if="step === 'output'">
-          <div class="mt-6">
-            <h2 class="text-xl font-semibold mb-2">Result:</h2>
-            <textarea
-              x-ref="resultText"
-              x-text="result"
-              readonly
-              class="w-full h-40 p-2 border rounded bg-gray-50 dark:bg-gray-800 dark:border-gray-600"
-            ></textarea>
-            <button
-              @click="copyResult"
-              class="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-              Copy to Clipboard
-            </button>
-            <p x-show="copied" x-transition class="text-sm mt-2 text-green-600">
-              Copied!
-            </p>
-          </div>
-        </template>
-      </div>
-
-      <!-- Gallery Page -->
-      <div x-show="page === 'gallery'">
-        <h1 class="text-2xl font-bold mb-4">Gallery</h1>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" x-data="galleryApp" x-init="loadGallery()">
-          <template x-for="item in gallery" :key="item.name">
-            <div class="relative border border-yellow-600 rounded-lg shadow-lg p-4 bg-gradient-to-br from-yellow-100 to-white dark:from-yellow-900 dark:to-gray-900">
-              <div class="absolute top-0 left-0 w-full h-2 bg-yellow-600 rounded-t"></div>
-              <img :src="item.image" alt="item.name" class="w-full h-40 object-cover mb-2 rounded border border-yellow-600" />
-              <h3 class="text-xl font-bold text-yellow-800 dark:text-yellow-300" x-text="item.name"></h3>
-              <p class="text-sm italic mb-2" x-text="item.description"></p>
-              <ul class="text-sm list-disc list-inside">
-                <template x-for="stat in item.stats" :key="stat">
-                  <li x-text="stat"></li>
-                </template>
-              </ul>
-            </div>
-          </template>
-        </div>
-      </div>
+      </button>
     </div>
 
-    <script>
-      document.addEventListener('alpine:init', () => {
-        Alpine.data('siteData', () => ({
-          page: 'form',
-          theme: localStorage.getItem('theme') || 'light',
-          init() {
-            document.documentElement.classList.toggle('dark', this.theme === 'dark');
-          },
-          toggleTheme() {
-            this.theme = this.theme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', this.theme);
-            document.documentElement.classList.toggle('dark', this.theme === 'dark');
+    <!-- Form -->
+    <div x-data="formApp" x-init="initForm()">
+      <h1 class="text-2xl font-bold mb-4">Custom Form</h1>
+
+      <!-- Username Input -->
+      <template x-if="step === 'username'">
+        <div>
+          <label class="block mb-2 font-medium">Enter your username:</label>
+          <input
+            type="text"
+            x-model="username"
+            placeholder="e.g. discordUser123"
+            class="border p-2 w-full mb-4 rounded bg-white dark:bg-gray-800 dark:border-gray-700"
+          />
+          <button
+            @click="startForm"
+            class="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+            :disabled="!username.trim()"
+          >
+            Start
+          </button>
+        </div>
+      </template>
+
+      <!-- Question Block -->
+      <template x-if="step === 'form' && currentQuestion">
+        <div>
+          <p class="mb-4 text-lg font-semibold" x-text="currentQuestion.text"></p>
+          <template x-for="opt in currentQuestion.options" :key="opt.label">
+            <button
+              class="block w-full text-left bg-gray-200 dark:bg-gray-700 hover:bg-green-200 dark:hover:bg-green-700 px-4 py-2 mb-2 rounded"
+              @click="selectOption(opt)"
+              x-text="opt.label"
+            ></button>
+          </template>
+        </div>
+      </template>
+
+      <!-- Output Block -->
+      <template x-if="step === 'output'">
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold mb-2">Result:</h2>
+          <textarea
+            x-ref="resultText"
+            x-text="result"
+            readonly
+            class="w-full h-40 p-2 border rounded bg-gray-50 dark:bg-gray-800 dark:border-gray-600"
+          ></textarea>
+          <button
+            @click="copyResult"
+            class="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            Copy to Clipboard
+          </button>
+          <p x-show="copied" x-transition class="text-sm mt-2 text-green-600">
+            Copied!
+          </p>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('siteData', () => ({
+        theme: localStorage.getItem('theme') || 'light',
+        init() {
+          document.documentElement.classList.toggle('dark', this.theme === 'dark');
+        },
+        toggleTheme() {
+          this.theme = this.theme === 'dark' ? 'light' : 'dark';
+          localStorage.setItem('theme', this.theme);
+          document.documentElement.classList.toggle('dark', this.theme === 'dark');
+        }
+      }));
+
+      Alpine.data('formApp', () => ({
+        step: 'username',
+        username: '',
+        currentQuestionId: null,
+        questions: {},
+        answers: [],
+        copied: false,
+
+        async initForm() {
+          const res = await fetch('risp-questions.json');
+          this.questions = await res.json();
+        },
+
+        get currentQuestion() {
+          return this.questions[this.currentQuestionId];
+        },
+
+        startForm() {
+          if (!this.username.trim()) return;
+          this.currentQuestionId = 'q1';
+          this.step = 'form';
+        },
+
+        selectOption(opt) {
+          this.answers.push({
+            question: this.currentQuestion.text,
+            options: this.currentQuestion.options,
+            selected: opt.label,
+          });
+
+          if (opt.next === 'end') {
+            this.step = 'output';
+          } else {
+            this.currentQuestionId = opt.next;
           }
-        }));
+        },
 
-        Alpine.data('formApp', () => ({
-          step: 'username',
-          username: '',
-          currentQuestionId: null,
-          questions: {},
-          answers: [],
-          copied: false,
-
-          async initForm() {
-            const res = await fetch('risp-questions.json');
-            this.questions = await res.json();
-          },
-
-          get currentQuestion() {
-            return this.questions[this.currentQuestionId];
-          },
-
-          startForm() {
-            if (!this.username.trim()) return;
-            this.currentQuestionId = 'q1';
-            this.step = 'form';
-          },
-
-          selectOption(opt) {
-            this.answers.push({
-              question: this.currentQuestion.text,
-              options: this.currentQuestion.options,
-              selected: opt.label,
+        get result() {
+          let output = '```\n' + this.username + '\n\n';
+          this.answers.forEach((a) => {
+            output += `${a.question}\n`;
+            a.options.forEach((opt) => {
+              output += `${opt.label === a.selected ? '✅' : '⬜'} ${opt.label}\n`;
             });
+            output += '\n';
+          });
+          output += '```';
+          return output;
+        },
 
-            if (opt.next === 'end') {
-              this.step = 'output';
-            } else {
-              this.currentQuestionId = opt.next;
-            }
-          },
-
-          get result() {
-            let output = '```\n' + this.username + '\n\n';
-            this.answers.forEach((a) => {
-              output += `${a.question}\n`;
-              a.options.forEach((opt) => {
-                output += `${opt.label === a.selected ? '✅' : '⬜'} ${opt.label}\n`;
-              });
-              output += '\n';
-            });
-            output += '```';
-            return output;
-          },
-
-          copyResult() {
-            navigator.clipboard.writeText(this.result).then(() => {
-              this.copied = true;
-              setTimeout(() => (this.copied = false), 2000);
-            });
-          },
-        }));
-
-        Alpine.data('galleryApp', () => ({
-          gallery: [],
-          async loadGallery() {
-            const res = await fetch('specialists.json'); // updated filename
-            this.gallery = await res.json();
-          }
-        }));
-      });
-    </script>
-  </body>
+        copyResult() {
+          navigator.clipboard.writeText(this.result).then(() => {
+            this.copied = true;
+            setTimeout(() => (this.copied = false), 2000);
+          });
+        },
+      }));
+    });
+  </script>
+</body>
 </html>
