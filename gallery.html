@@ -26,25 +26,33 @@
       </nav>
     </header>
 
-    <!-- Main Content -->
-    <main class="p-6 max-w-5xl mx-auto" x-data="galleryApp()" x-init="loadSpecialists()">
-      <h2 class="text-2xl font-semibold mb-4">Specialist Gallery</h2>
-      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <!-- Gallery Section -->
+    <main class="max-w-7xl mx-auto p-6" x-data="galleryApp()" x-init="loadSpecialists()">
+      <h2 class="text-2xl font-semibold mb-6 text-center">Specialist Gallery</h2>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <template x-for="item in specialists" :key="item.name">
-          <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 border dark:border-gray-700">
-            <img :src="item.image" :alt="item.name" class="w-full h-40 object-cover rounded mb-2" />
-            <h3 class="text-lg font-bold" x-text="item.name"></h3>
-            <p class="text-sm mb-2" x-text="item.description"></p>
-            <ul class="text-sm list-disc list-inside text-green-600 dark:text-green-400">
-              <template x-for="stat in item.stats">
-                <li x-text="stat"></li>
-              </template>
-            </ul>
+          <div class="relative bg-yellow-100 dark:bg-yellow-900 text-gray-800 dark:text-gray-100 border-4 border-yellow-400 dark:border-yellow-700 rounded-xl shadow-lg overflow-hidden">
+            <!-- Frame overlay (simulate Anno item frame) -->
+            <div class="relative">
+              <img :src="item.image" :alt="item.name" class="w-full h-40 object-cover" />
+              <div class="absolute inset-0 border-4 border-yellow-300 dark:border-yellow-600 rounded-xl pointer-events-none"></div>
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-bold text-yellow-800 dark:text-yellow-200" x-text="item.name"></h3>
+              <p class="text-sm italic mb-2" x-text="item.description"></p>
+              <ul class="text-sm list-disc list-inside text-green-700 dark:text-green-400">
+                <template x-for="stat in item.stats">
+                  <li x-text="stat"></li>
+                </template>
+              </ul>
+            </div>
           </div>
         </template>
       </div>
     </main>
 
+    <!-- Alpine Scripts -->
     <script>
       function themeToggle() {
         return {
@@ -62,4 +70,26 @@
             document.documentElement.classList.toggle('dark', this.darkMode);
           },
           isActive(page) {
-            return window.location.pathname.inc
+            return window.location.pathname.includes(page)
+              ? 'underline font-bold'
+              : '';
+          },
+        };
+      }
+
+      function galleryApp() {
+        return {
+          specialists: [],
+          async loadSpecialists() {
+            try {
+              const res = await fetch('specialists.json');
+              this.specialists = await res.json();
+            } catch (err) {
+              console.error('Failed to load specialists:', err);
+            }
+          },
+        };
+      }
+    </script>
+  </body>
+</html>
