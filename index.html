@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dark Mode Toggle Test</title>
+  <title>Anno 1800 Specialist Request Form</title>
+
+  <!-- Configure Tailwind to use class strategy for dark mode -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
   <style>
     .icon-button {
       cursor: pointer;
@@ -19,54 +27,301 @@
   </style>
 </head>
 <body
-  x-data="app()"
-  x-init="init()"
-  :class="darkMode ? 'dark' : ''"
-  class="min-h-screen flex items-center justify-center bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300"
+  x-data="formApp"
+  x-init="() => {
+    // Initialize dark mode from localStorage or system preference
+    if (
+      localStorage.getItem('darkMode') === 'true' ||
+      (!localStorage.getItem('darkMode') &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      document.documentElement.classList.add('dark');
+      dark = true;
+    }
+  }"
+  :class="{ dark: dark }"
+  class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col"
 >
-  <button
-    @click="toggleDarkMode"
-    :aria-label="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
-    title="Toggle dark mode"
+  <!-- Nav -->
+  <nav
+    class="bg-white dark:bg-gray-800 shadow-md px-6 py-3 flex justify-between items-center"
   >
-    <template x-if="darkMode">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon-button" viewBox="0 0 24 24" stroke="currentColor" fill="none">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 0112.21 3a7 7 0 009 9.79z" />
-      </svg>
-    </template>
-    <template x-if="!darkMode">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon-button" viewBox="0 0 24 24" stroke="currentColor" fill="none">
-        <circle cx="12" cy="12" r="5" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.364-6.364l-1.414 1.414M6.05 17.95l-1.414 1.414m0-13.414l1.414 1.414M17.95 17.95l1.414 1.414" />
-      </svg>
-    </template>
-  </button>
+    <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100">
+      Anno 1800 Specialist Request
+    </h1>
+    <div class="flex items-center space-x-4">
+      <!-- Dark Mode Toggle -->
+      <button
+        @click="dark = !dark; localStorage.setItem('darkMode', dark); document.documentElement.classList.toggle('dark', dark)"
+        aria-label="Toggle Dark Mode"
+        class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+      >
+        <template x-if="!dark">
+          <!-- Moon icon for switching to dark -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon-button text-gray-800"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"
+            />
+          </svg>
+        </template>
+        <template x-if="dark">
+          <!-- Sun icon for switching to light -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon-button text-yellow-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 3v1m0 16v1m8.66-9h1M3 12h1m15.364 6.364l-.707.707M6.343 6.343l-.707.707m12.728 0l-.707-.707M6.343 17.657l-.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z"
+            />
+          </svg>
+        </template>
+      </button>
+    </div>
+  </nav>
+
+  <main
+    class="flex-grow flex items-center justify-center p-6"
+    x-cloak
+  >
+    <div
+      class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md w-full max-w-xl"
+    >
+      <h2
+        class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100"
+      >
+        Specialist Request Form
+      </h2>
+
+      <!-- Username Step -->
+      <template x-if="step === 'username'">
+        <div>
+          <label
+            class="block mb-2 font-medium text-gray-700 dark:text-gray-300"
+            for="username"
+            >Enter your username:</label
+          >
+          <input
+            id="username"
+            type="text"
+            x-model="username"
+            class="border p-2 w-full mb-4 rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+            placeholder="Discord username"
+          />
+          <button
+            @click="startForm"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+          >
+            Start
+          </button>
+        </div>
+      </template>
+
+      <!-- Form Question Step -->
+      <template x-if="step === 'form'">
+        <div>
+          <p
+            class="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200"
+            x-text="currentQuestion.text"
+          ></p>
+
+          <!-- Multiple choice options -->
+          <template x-if="currentQuestion.type === 'choice'">
+            <template x-for="opt in currentQuestion.options" :key="opt.label">
+              <button
+                class="block w-full text-left bg-gray-200 hover:bg-green-200 dark:bg-gray-700 dark:hover:bg-green-600 px-4 py-2 mb-2 rounded text-gray-900 dark:text-gray-100"
+                @click="selectOption(opt)"
+                x-text="opt.label"
+              ></button>
+            </template>
+          </template>
+
+          <!-- User input options -->
+          <template x-if="currentQuestion.type === 'input'">
+            <input
+              type="text"
+              x-model="userInput"
+              @keydown.enter.prevent="submitInput()"
+              placeholder="Type your answer and press Enter"
+              class="border p-2 w-full rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+              autofocus
+            />
+            <button
+              @click="submitInput"
+              class="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+            >
+              Submit
+            </button>
+          </template>
+        </div>
+      </template>
+
+      <!-- Output Step -->
+      <template x-if="step === 'output'">
+        <div class="mt-6">
+          <h3
+            class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100"
+          >
+            Generated Request:
+          </h3>
+          <textarea
+            x-ref="resultText"
+            x-text="result"
+            class="w-full h-48 p-3 border rounded bg-gray-50 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600 resize-none"
+            readonly
+          ></textarea>
+          <button
+            @click="copyResult"
+            class="mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+          >
+            Copy to Clipboard
+          </button>
+          <p
+            x-show="copied"
+            x-transition
+            class="text-sm mt-2 text-green-500 dark:text-green-400"
+          >
+            Copied!
+          </p>
+        </div>
+      </template>
+    </div>
+  </main>
 
   <script>
-    function app() {
-      return {
-        darkMode: false,
-        init() {
-          this.darkMode = localStorage.getItem("darkMode") === "true";
-          this.updateBodyClass();
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('formApp', () => ({
+        step: 'username',
+        username: '',
+        currentQuestionId: null,
+        userInput: '',
+        dark: false,
+        questions: {
+          q1: {
+            text: 'Do you want to continue?',
+            type: 'choice',
+            options: [
+              { label: 'Yes', next: 'q2' },
+              { label: 'No', next: 'end' },
+            ],
+          },
+          q2: {
+            text: 'Pick your role:',
+            type: 'choice',
+            options: [
+              { label: 'Specialist', next: 'q3' },
+              { label: 'Advisor', next: 'q3' },
+            ],
+          },
+          q3: {
+            text: 'Enter your specialist name:',
+            type: 'input',
+            next: 'q4',
+          },
+          q4: {
+            text: 'Describe your specialist (short):',
+            type: 'input',
+            next: 'q5',
+          },
+          q5: {
+            text: 'Choose specialist bonus:',
+            type: 'choice',
+            options: [
+              { label: '+30% Harbor Defense', next: 'end' },
+              { label: '+50% Research Speed', next: 'end' },
+              { label: '+10% Happiness', next: 'end' },
+              { label: 'Custom bonus', next: 'q6' },
+            ],
+          },
+          q6: {
+            text: 'Please specify your custom bonus:',
+            type: 'input',
+            next: 'end',
+          },
         },
-        toggleDarkMode() {
-          this.darkMode = !this.darkMode;
-          localStorage.setItem("darkMode", this.darkMode);
-          this.updateBodyClass();
+        answers: [],
+        copied: false,
+
+        get currentQuestion() {
+          return this.questions[this.currentQuestionId];
         },
-        updateBodyClass() {
-          if (this.darkMode) {
-            document.body.classList.add("dark");
+
+        startForm() {
+          if (!this.username.trim()) return;
+          this.answers = [];
+          this.userInput = '';
+          this.currentQuestionId = 'q1';
+          this.step = 'form';
+        },
+
+        selectOption(opt) {
+          this.answers.push({
+            question: this.currentQuestion.text,
+            options: this.currentQuestion.options,
+            selected: opt.label,
+          });
+
+          if (opt.next === 'end') {
+            this.step = 'output';
           } else {
-            document.body.classList.remove("dark");
+            this.currentQuestionId = opt.next;
+            this.userInput = '';
           }
         },
-      };
-    }
 
-    document.addEventListener("alpine:init", () => {
-      Alpine.data("app", app);
+        submitInput() {
+          if (!this.userInput.trim()) return;
+
+          this.answers.push({
+            question: this.currentQuestion.text,
+            options: null,
+            selected: this.userInput.trim(),
+          });
+
+          if (this.currentQuestion.next === 'end') {
+            this.step = 'output';
+          } else {
+            this.currentQuestionId = this.currentQuestion.next;
+            this.userInput = '';
+          }
+        },
+
+        get result() {
+          let output = '```\n' + this.username + '\n\n';
+          this.answers.forEach((a) => {
+            output += `${a.question}\n`;
+            if (a.options) {
+              a.options.forEach((opt) => {
+                output += `${opt.label === a.selected ? '✅' : '⬜'} ${opt.label}\n`;
+              });
+            } else {
+              output += `✔ ${a.selected}\n`;
+            }
+            output += '\n';
+          });
+          output += '```';
+          return output;
+        },
+
+        copyResult() {
+          navigator.clipboard.writeText(this.result).then(() => {
+            this.copied = true;
+            setTimeout(() => (this.copied = false), 2000);
+          });
+        },
+      }));
     });
   </script>
 </body>
