@@ -1,328 +1,285 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Anno 1800 Specialist Request Form</title>
-
-  <!-- Configure Tailwind to use class strategy for dark mode -->
-  <script>
-    tailwind.config = {
-      darkMode: 'class'
-    }
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-  <style>
-    .icon-button {
-      cursor: pointer;
-      width: 28px;
-      height: 28px;
-      stroke-width: 2;
-      stroke: currentColor;
-      fill: none;
-      transition: stroke 0.3s ease;
-    }
-  </style>
-</head>
-<body
-  x-data="formApp"
-  x-init="() => {
-    // Initialize dark mode from localStorage or system preference
-    if (
-      localStorage.getItem('darkMode') === 'true' ||
-      (!localStorage.getItem('darkMode') &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      document.documentElement.classList.add('dark');
-      dark = true;
-    }
-  }"
-  :class="{ dark: dark }"
-  class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col"
->
-  <!-- Nav -->
-  <nav
-    class="bg-white dark:bg-gray-800 shadow-md px-6 py-3 flex justify-between items-center"
-  >
-    <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100">
-      Anno 1800 Specialist Request
-    </h1>
-    <div class="flex items-center space-x-4">
-      <!-- Dark Mode Toggle -->
+<html lang="en" :class="{ 'dark': darkMode }" x-data="app()" x-init="init()" x-cloak>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Conditional Specialist Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+      [x-cloak] { display: none !important; }
+    </style>
+  </head>
+  <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-6">
+        <a href="index.html" class="text-gray-800 dark:text-gray-200 font-semibold hover:underline">Form</a>
+        <a href="gallery.html" class="text-gray-800 dark:text-gray-200 font-semibold hover:underline">Gallery</a>
+      </div>
       <button
-        @click="dark = !dark; localStorage.setItem('darkMode', dark); document.documentElement.classList.toggle('dark', dark)"
+        @click="toggleDarkMode()"
         aria-label="Toggle Dark Mode"
-        class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+        class="text-gray-800 dark:text-gray-200 hover:text-green-500 dark:hover:text-green-400 focus:outline-none"
       >
-        <template x-if="!dark">
-          <!-- Moon icon for switching to dark -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon-button text-gray-800"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"
-            />
+        <template x-if="!darkMode">
+          <!-- Light Mode Icon (Sun) -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.485-9H21M3 12H2m15.364-6.364l.707.707M6.343 17.657l-.707.707m12.02 0l-.707.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z" />
           </svg>
         </template>
-        <template x-if="dark">
-          <!-- Sun icon for switching to light -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon-button text-yellow-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 3v1m0 16v1m8.66-9h1M3 12h1m15.364 6.364l-.707.707M6.343 6.343l-.707.707m12.728 0l-.707-.707M6.343 17.657l-.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z"
-            />
+        <template x-if="darkMode">
+          <!-- Dark Mode Icon (Moon) -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" stroke="none">
+            <path d="M21 12.79A9 9 0 0111.21 3c0 5-4 9-4 9a9 9 0 009.79 9.79c0-3.38 1.39-6.44 3-8.99z" />
           </svg>
         </template>
       </button>
-    </div>
-  </nav>
+    </nav>
 
-  <main
-    class="flex-grow flex items-center justify-center p-6"
-    x-cloak
-  >
-    <div
-      class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md w-full max-w-xl"
-    >
-      <h2
-        class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100"
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center p-6">
+      <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md w-full max-w-xl"
+           x-data="formApp"
+           x-init="startForm()"
       >
-        Specialist Request Form
-      </h2>
+        <h1 class="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Custom Specialist Form</h1>
 
-      <!-- Username Step -->
-      <template x-if="step === 'username'">
-        <div>
-          <label
-            class="block mb-2 font-medium text-gray-700 dark:text-gray-300"
-            for="username"
-            >Enter your username:</label
-          >
-          <input
-            id="username"
-            type="text"
-            x-model="username"
-            class="border p-2 w-full mb-4 rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-            placeholder="Discord username"
-          />
-          <button
-            @click="startForm"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-          >
-            Start
-          </button>
-        </div>
-      </template>
-
-      <!-- Form Question Step -->
-      <template x-if="step === 'form'">
-        <div>
-          <p
-            class="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200"
-            x-text="currentQuestion.text"
-          ></p>
-
-          <!-- Multiple choice options -->
-          <template x-if="currentQuestion.type === 'choice'">
-            <template x-for="opt in currentQuestion.options" :key="opt.label">
-              <button
-                class="block w-full text-left bg-gray-200 hover:bg-green-200 dark:bg-gray-700 dark:hover:bg-green-600 px-4 py-2 mb-2 rounded text-gray-900 dark:text-gray-100"
-                @click="selectOption(opt)"
-                x-text="opt.label"
-              ></button>
-            </template>
-          </template>
-
-          <!-- User input options -->
-          <template x-if="currentQuestion.type === 'input'">
+        <!-- Username Input -->
+        <template x-if="step === 'username'">
+          <div>
+            <label class="block mb-2 font-medium text-gray-800 dark:text-gray-300">Enter your username:</label>
             <input
               type="text"
-              x-model="userInput"
-              @keydown.enter.prevent="submitInput()"
-              placeholder="Type your answer and press Enter"
-              class="border p-2 w-full rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-              autofocus
+              x-model="username"
+              class="border p-2 w-full mb-4 rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+              @keydown.enter.prevent="startForm()"
             />
             <button
-              @click="submitInput"
-              class="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+              @click="startForm"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
             >
-              Submit
+              Start
             </button>
-          </template>
-        </div>
-      </template>
+          </div>
+        </template>
 
-      <!-- Output Step -->
-      <template x-if="step === 'output'">
-        <div class="mt-6">
-          <h3
-            class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100"
-          >
-            Generated Request:
-          </h3>
-          <textarea
-            x-ref="resultText"
-            x-text="result"
-            class="w-full h-48 p-3 border rounded bg-gray-50 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600 resize-none"
-            readonly
-          ></textarea>
-          <button
-            @click="copyResult"
-            class="mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-          >
-            Copy to Clipboard
-          </button>
-          <p
-            x-show="copied"
-            x-transition
-            class="text-sm mt-2 text-green-500 dark:text-green-400"
-          >
-            Copied!
-          </p>
-        </div>
-      </template>
-    </div>
-  </main>
+        <!-- Question Block -->
+        <template x-if="step === 'form'">
+          <div>
+            <p class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100" x-text="currentQuestion.text"></p>
 
-  <script>
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('formApp', () => ({
-        step: 'username',
-        username: '',
-        currentQuestionId: null,
-        userInput: '',
-        dark: false,
-        questions: {
-          q1: {
-            text: 'Do you want to continue?',
-            type: 'choice',
-            options: [
-              { label: 'Yes', next: 'q2' },
-              { label: 'No', next: 'end' },
-            ],
-          },
-          q2: {
-            text: 'Pick your role:',
-            type: 'choice',
-            options: [
-              { label: 'Specialist', next: 'q3' },
-              { label: 'Advisor', next: 'q3' },
-            ],
-          },
-          q3: {
-            text: 'Enter your specialist name:',
-            type: 'input',
-            next: 'q4',
-          },
-          q4: {
-            text: 'Describe your specialist (short):',
-            type: 'input',
-            next: 'q5',
-          },
-          q5: {
-            text: 'Choose specialist bonus:',
-            type: 'choice',
-            options: [
-              { label: '+30% Harbor Defense', next: 'end' },
-              { label: '+50% Research Speed', next: 'end' },
-              { label: '+10% Happiness', next: 'end' },
-              { label: 'Custom bonus', next: 'q6' },
-            ],
-          },
-          q6: {
-            text: 'Please specify your custom bonus:',
-            type: 'input',
-            next: 'end',
-          },
-        },
-        answers: [],
-        copied: false,
+            <!-- Multiple Choice -->
+            <template x-if="currentQuestion.type === 'choice'">
+              <template x-for="opt in currentQuestion.options" :key="opt.label">
+                <button
+                  class="block w-full text-left bg-gray-200 hover:bg-green-200 dark:bg-gray-700 dark:hover:bg-green-600 px-4 py-2 mb-2 rounded dark:text-gray-200"
+                  @click="selectOption(opt)"
+                  x-text="opt.label"
+                ></button>
+              </template>
+            </template>
 
-        get currentQuestion() {
-          return this.questions[this.currentQuestionId];
-        },
+            <!-- User Input -->
+            <template x-if="currentQuestion.type === 'input'">
+              <input
+                type="text"
+                x-model="inputAnswer"
+                @keydown.enter.prevent="submitInput()"
+                class="border p-2 w-full mb-4 rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                placeholder="Type your answer here"
+              />
+              <button
+                @click="submitInput"
+                :disabled="!inputAnswer.trim()"
+                class="bg-blue-600 disabled:opacity-50 hover:bg-blue-700 text-white px-4 py-2 rounded"
+              >
+                Next
+              </button>
+            </template>
+          </div>
+        </template>
 
-        startForm() {
-          if (!this.username.trim()) return;
-          this.answers = [];
-          this.userInput = '';
-          this.currentQuestionId = 'q1';
-          this.step = 'form';
-        },
+        <!-- Output Block -->
+        <template x-if="step === 'output'">
+          <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">Result:</h2>
+            <textarea
+              x-ref="resultText"
+              x-text="result"
+              readonly
+              class="w-full h-52 p-2 border rounded bg-gray-50 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+            ></textarea>
+            <button
+              @click="copyResult"
+              class="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+            >
+              Copy to Clipboard
+            </button>
+            <p
+              x-show="copied"
+              x-transition
+              class="text-sm mt-2 text-green-500 dark:text-green-400"
+            >
+              Copied!
+            </p>
+          </div>
+        </template>
+      </div>
+    </main>
 
-        selectOption(opt) {
-          this.answers.push({
-            question: this.currentQuestion.text,
-            options: this.currentQuestion.options,
-            selected: opt.label,
-          });
-
-          if (opt.next === 'end') {
-            this.step = 'output';
-          } else {
-            this.currentQuestionId = opt.next;
-            this.userInput = '';
-          }
-        },
-
-        submitInput() {
-          if (!this.userInput.trim()) return;
-
-          this.answers.push({
-            question: this.currentQuestion.text,
-            options: null,
-            selected: this.userInput.trim(),
-          });
-
-          if (this.currentQuestion.next === 'end') {
-            this.step = 'output';
-          } else {
-            this.currentQuestionId = this.currentQuestion.next;
-            this.userInput = '';
-          }
-        },
-
-        get result() {
-          let output = '```\n' + this.username + '\n\n';
-          this.answers.forEach((a) => {
-            output += `${a.question}\n`;
-            if (a.options) {
-              a.options.forEach((opt) => {
-                output += `${opt.label === a.selected ? '✅' : '⬜'} ${opt.label}\n`;
-              });
+    <script>
+      function app() {
+        return {
+          darkMode: false,
+          toggleDarkMode() {
+            this.darkMode = !this.darkMode;
+            if (this.darkMode) {
+              document.documentElement.classList.add('dark');
+              localStorage.setItem('darkMode', 'true');
             } else {
-              output += `✔ ${a.selected}\n`;
+              document.documentElement.classList.remove('dark');
+              localStorage.setItem('darkMode', 'false');
             }
-            output += '\n';
-          });
-          output += '```';
-          return output;
-        },
+          },
+          init() {
+            // Initialize dark mode from localStorage or prefers-color-scheme
+            const stored = localStorage.getItem('darkMode');
+            if (stored === 'true' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              this.darkMode = true;
+              document.documentElement.classList.add('dark');
+            } else {
+              this.darkMode = false;
+              document.documentElement.classList.remove('dark');
+            }
+          },
+        }
+      }
 
-        copyResult() {
-          navigator.clipboard.writeText(this.result).then(() => {
-            this.copied = true;
-            setTimeout(() => (this.copied = false), 2000);
-          });
-        },
-      }));
-    });
-  </script>
-</body>
+      document.addEventListener('alpine:init', () => {
+        Alpine.data('formApp', () => ({
+          step: 'username',
+          username: '',
+          currentQuestionId: null,
+          inputAnswer: '',
+          answers: [],
+          copied: false,
+          questions: {
+            q1: {
+              text: 'Do you want to continue?',
+              type: 'choice',
+              options: [
+                { label: 'Yes', next: 'q2' },
+                { label: 'No', next: 'q6' },
+              ],
+            },
+            q2: {
+              text: 'Pick your role:',
+              type: 'choice',
+              options: [
+                { label: 'Admin', next: 'q3' },
+                { label: 'User', next: 'q3' },
+              ],
+            },
+            q3: {
+              text: 'Receive updates?',
+              type: 'choice',
+              options: [
+                { label: 'Yes', next: 'q4' },
+                { label: 'No', next: 'q4' },
+              ],
+            },
+            q4: {
+              text: 'Specialist name:',
+              type: 'input',
+              next: 'q5',
+            },
+            q5: {
+              text: 'Describe your specialist’s unique abilities:',
+              type: 'input',
+              next: 'end',
+            },
+            q6: {
+              text: 'Why did you stop?',
+              type: 'choice',
+              options: [
+                { label: 'Changed mind', next: 'end' },
+                { label: 'Not interested', next: 'end' },
+              ],
+            },
+          },
+
+          get currentQuestion() {
+            return this.questions[this.currentQuestionId];
+          },
+
+          startForm() {
+            if (!this.username.trim()) return;
+            this.answers = [];
+            this.inputAnswer = '';
+            this.currentQuestionId = 'q1';
+            this.step = 'form';
+          },
+
+          selectOption(opt) {
+            this.answers.push({
+              question: this.currentQuestion.text,
+              options: this.currentQuestion.options || [],
+              selected: opt.label,
+              input: null,
+            });
+
+            if (opt.next === 'end') {
+              this.step = 'output';
+            } else {
+              this.currentQuestionId = opt.next;
+              this.inputAnswer = '';
+            }
+          },
+
+          submitInput() {
+            if (!this.inputAnswer.trim()) return;
+
+            this.answers.push({
+              question: this.currentQuestion.text,
+              options: [],
+              selected: null,
+              input: this.inputAnswer.trim(),
+            });
+
+            if (this.currentQuestion.next === 'end') {
+              this.step = 'output';
+            } else {
+              this.currentQuestionId = this.currentQuestion.next;
+              this.inputAnswer = '';
+            }
+          },
+
+          get result() {
+            let output = '```\n' + this.username + '\n\n';
+            this.answers.forEach((a) => {
+              output += `${a.question}\n`;
+              if (a.options && a.options.length) {
+                a.options.forEach((opt) => {
+                  output += `${opt.label === a.selected ? '✅' : '⬜'} ${opt.label}\n`;
+                });
+              } else if (a.input) {
+                output += `> ${a.input}\n`;
+              }
+              output += '\n';
+            });
+            output += '```';
+            return output;
+          },
+
+          copyResult() {
+            navigator.clipboard.writeText(this.result).then(() => {
+              this.copied = true;
+              setTimeout(() => (this.copied = false), 2000);
+            });
+          },
+        }));
+      });
+    </script>
+  </body>
 </html>
