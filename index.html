@@ -11,17 +11,18 @@
         darkMode: 'class',
       };
     </script>
+    <script src="https://unpkg.com/@tabler/icons-webfont"></script>
   </head>
   <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
-    <div class="max-w-3xl mx-auto p-4">
+    <div class="max-w-4xl mx-auto p-4">
       <!-- Navbar -->
       <div class="flex justify-between items-center mb-6">
         <div class="flex space-x-4">
           <button @click="page = 'form'" :class="{ 'font-bold underline': page === 'form' }">Form</button>
           <button @click="page = 'gallery'" :class="{ 'font-bold underline': page === 'gallery' }">Gallery</button>
         </div>
-        <button @click="toggleTheme" class="text-sm px-3 py-1 border rounded">
-          <span x-text="theme === 'dark' ? 'Light Mode' : 'Dark Mode'"></span>
+        <button @click="toggleTheme" class="text-xl">
+          <i :class="theme === 'dark' ? 'ti ti-sun' : 'ti ti-moon'" class="transition duration-200"></i>
         </button>
       </div>
 
@@ -79,11 +80,7 @@
             >
               Copy to Clipboard
             </button>
-            <p
-              x-show="copied"
-              x-transition
-              class="text-sm mt-2 text-green-600"
-            >
+            <p x-show="copied" x-transition class="text-sm mt-2 text-green-600">
               Copied!
             </p>
           </div>
@@ -93,12 +90,13 @@
       <!-- Gallery Page -->
       <div x-show="page === 'gallery'">
         <h1 class="text-2xl font-bold mb-4">Gallery</h1>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" x-data="galleryApp" x-init="loadGallery()">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" x-data="galleryApp" x-init="loadGallery()">
           <template x-for="item in gallery" :key="item.name">
-            <div class="bg-white dark:bg-gray-800 border dark:border-gray-600 rounded p-4 shadow">
-              <img :src="item.image" alt="item.name" class="w-full h-40 object-cover mb-2 rounded" />
-              <h3 class="text-lg font-bold" x-text="item.name"></h3>
-              <p class="text-sm mb-2" x-text="item.description"></p>
+            <div class="relative border border-yellow-600 rounded-lg shadow-lg p-4 bg-gradient-to-br from-yellow-100 to-white dark:from-yellow-900 dark:to-gray-900">
+              <div class="absolute top-0 left-0 w-full h-2 bg-yellow-600 rounded-t"></div>
+              <img :src="item.image" alt="item.name" class="w-full h-40 object-cover mb-2 rounded border border-yellow-600" />
+              <h3 class="text-xl font-bold text-yellow-800 dark:text-yellow-300" x-text="item.name"></h3>
+              <p class="text-sm italic mb-2" x-text="item.description"></p>
               <ul class="text-sm list-disc list-inside">
                 <template x-for="stat in item.stats" :key="stat">
                   <li x-text="stat"></li>
@@ -111,16 +109,13 @@
     </div>
 
     <script>
-      // Site-level state (theme + routing)
       document.addEventListener('alpine:init', () => {
         Alpine.data('siteData', () => ({
           page: 'form',
           theme: localStorage.getItem('theme') || 'light',
-
           init() {
             document.documentElement.classList.toggle('dark', this.theme === 'dark');
           },
-
           toggleTheme() {
             this.theme = this.theme === 'dark' ? 'light' : 'dark';
             localStorage.setItem('theme', this.theme);
@@ -188,9 +183,8 @@
 
         Alpine.data('galleryApp', () => ({
           gallery: [],
-
           async loadGallery() {
-            const res = await fetch('specialists.json');
+            const res = await fetch('specialists.json'); // updated filename
             this.gallery = await res.json();
           }
         }));
