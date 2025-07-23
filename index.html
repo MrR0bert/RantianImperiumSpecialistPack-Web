@@ -6,87 +6,136 @@
   <title>Anno 1800 Specialist Request Form</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    /* Icon styling for dark mode toggle */
+    .icon-button {
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-  <div
-    x-data="formApp()"
-    class="bg-white p-8 rounded-xl shadow-md w-full max-w-xl"
-  >
-    <h1 class="text-2xl font-bold mb-6">Specialist Request Form</h1>
+<body x-data="app()" :class="darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'" class="min-h-screen flex flex-col">
 
-    <!-- Loading -->
-    <template x-if="step === 'loading'">
-      <p>Loading questions...</p>
-    </template>
+  <!-- Navigation -->
+  <nav class="flex items-center justify-between px-6 py-4 border-b dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md">
+    <div class="flex items-center space-x-4">
+      <a href="index.html" class="font-bold text-lg hover:underline">Form</a>
+      <a href="gallery.html" class="font-bold text-lg hover:underline">Gallery</a>
+    </div>
+    <button
+      @click="darkMode = !darkMode"
+      :aria-label="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+      class="text-xl"
+      title="Toggle dark mode"
+    >
+      <template x-if="darkMode">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-button" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 0112.21 3a7 7 0 009 9.79z"/>
+        </svg>
+      </template>
+      <template x-if="!darkMode">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-button" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+          <circle cx="12" cy="12" r="5" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.364-6.364l-1.414 1.414M6.05 17.95l-1.414 1.414m0-13.414l1.414 1.414M17.95 17.95l1.414 1.414"/>
+        </svg>
+      </template>
+    </button>
+  </nav>
 
-    <!-- Form -->
-    <template x-if="step === 'form'">
-      <div>
-        <p class="mb-4 text-lg font-semibold" x-text="currentQuestion.text"></p>
+  <!-- Main container -->
+  <main class="flex-grow flex items-center justify-center p-6">
+    <div
+      x-data="formApp()"
+      x-init="init()"
+      class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md w-full max-w-xl"
+      :class="darkMode ? 'text-gray-100' : 'text-gray-900'"
+    >
+      <h1 class="text-2xl font-bold mb-6">Specialist Request Form</h1>
 
-        <!-- Input type -->
-        <template x-if="currentQuestion.type === 'input'">
-          <div>
-            <input
-              type="text"
-              x-model="userInput"
-              class="border p-2 w-full mb-4 rounded"
-              @keydown.enter.prevent="submitInput()"
-              placeholder="Type your answer here"
-            />
-            <button
-              @click="submitInput()"
-              class="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
-              :disabled="!userInput.trim()"
-            >
-              Next
-            </button>
-          </div>
-        </template>
+      <!-- Loading -->
+      <template x-if="step === 'loading'">
+        <p>Loading questions...</p>
+      </template>
 
-        <!-- Choice type -->
-        <template x-if="currentQuestion.type === 'choice'">
-          <div>
-            <template x-for="opt in currentQuestion.options" :key="opt.label">
+      <!-- Form -->
+      <template x-if="step === 'form'">
+        <div>
+          <p class="mb-4 text-lg font-semibold" x-text="currentQuestion.text"></p>
+
+          <!-- Input type -->
+          <template x-if="currentQuestion.type === 'input'">
+            <div>
+              <input
+                type="text"
+                x-model="userInput"
+                class="border p-2 w-full mb-4 rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                @keydown.enter.prevent="submitInput()"
+                placeholder="Type your answer here"
+              />
               <button
-                class="block w-full text-left bg-gray-200 hover:bg-green-200 px-4 py-2 mb-2 rounded"
-                @click="selectOption(opt)"
-                x-text="opt.label"
-              ></button>
-            </template>
-          </div>
-        </template>
-      </div>
-    </template>
+                @click="submitInput()"
+                class="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                :disabled="!userInput.trim()"
+              >
+                Next
+              </button>
+            </div>
+          </template>
 
-    <!-- Output -->
-    <template x-if="step === 'output'">
-      <div class="mt-6">
-        <h2 class="text-xl font-semibold mb-2">Your Request Text</h2>
-        <textarea
-          readonly
-          class="w-full h-56 p-3 border rounded bg-gray-50 font-mono whitespace-pre-wrap"
-          x-text="result"
-          @click="$el.select()"
-        ></textarea>
-        <button
-          @click="copyResult()"
-          class="mt-3 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded"
-        >
-          Copy to Clipboard
-        </button>
-        <p
-          x-show="copied"
-          x-transition
-          class="text-green-600 mt-2"
-        >
-          Copied!
-        </p>
-      </div>
-    </template>
-  </div>
+          <!-- Choice type -->
+          <template x-if="currentQuestion.type === 'choice'">
+            <div>
+              <template x-for="opt in currentQuestion.options" :key="opt.label">
+                <button
+                  class="block w-full text-left bg-gray-200 hover:bg-green-200 px-4 py-2 mb-2 rounded dark:bg-gray-700 dark:hover:bg-green-600"
+                  @click="selectOption(opt)"
+                  x-text="opt.label"
+                ></button>
+              </template>
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <!-- Output -->
+      <template x-if="step === 'output'">
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold mb-2">Your Request Text</h2>
+          <textarea
+            readonly
+            class="w-full h-56 p-3 border rounded bg-gray-50 dark:bg-gray-900 font-mono whitespace-pre-wrap dark:text-gray-100"
+            x-text="result"
+            @click="$el.select()"
+          ></textarea>
+          <button
+            @click="copyResult()"
+            class="mt-3 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded"
+          >
+            Copy to Clipboard
+          </button>
+          <p
+            x-show="copied"
+            x-transition
+            class="text-green-500 mt-2"
+          >
+            Copied!
+          </p>
+        </div>
+      </template>
+    </div>
+  </main>
 
   <script>
+    function app() {
+      return {
+        darkMode: false,
+      }
+    }
+
     function formApp() {
       return {
         step: "loading",
@@ -169,11 +218,10 @@
         },
       };
     }
+
     document.addEventListener("alpine:init", () => {
+      Alpine.data("app", app);
       Alpine.data("formApp", formApp);
-    });
-    document.addEventListener("DOMContentLoaded", () => {
-      Alpine.store("formApp")?.init?.();
     });
   </script>
 </body>
