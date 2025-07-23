@@ -1,9 +1,43 @@
-{
-  "q1": {
+[
+  {
+    "id": "q1",
+    "text": "What is your username?",
+    "type": "input",
+    "key": "username",
+    "next": "q2"
+  },
+  {
+    "id": "q2",
+    "text": "What is the name of your specialist?",
+    "type": "input",
+    "key": "specialistName",
+    "next": "q3"
+  },
+  {
+    "id": "q3",
     "text": "What type of specialist are you?",
+    "type": "choice",
+    "key": "archetype",
     "options": [
-      { "label": "Trade Union", "next": "end" },
-      { "label": "Harbour Master's Office", "next": "end" },
-      { "label": "Town Hall", "next": "end" }
+      { "label": "Engineer", "next": "q4" },
+      { "label": "Military", "next": "q4" },
+      { "label": "Explorer", "next": "q4" },
+      { "label": "Cultural", "next": "q4" },
+      { "label": "Other", "next": "q4" }
     ]
-  } 
+  },
+  {
+    "id": "q4",
+    "text": "List your specialist's bonuses (separate by commas)",
+    "type": "input",
+    "key": "bonuses",
+    "next": "q5"
+  },
+  {
+    "id": "q5",
+    "text": "Write a short background story or flavor text.",
+    "type": "input",
+    "key": "flavorText",
+    "next": "end"
+  }
+]
