@@ -1,93 +1,196 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Specialist Gallery</title>
+    <title>Rantian Imperium — Specialist Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
   </head>
-  <body
-    x-data="themeToggle()"
-    x-init="init()"
-    :class="{ 'dark': darkMode }"
-    class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300"
-  >
-    <!-- Header -->
-    <header class="flex items-center justify-between p-4 shadow bg-white dark:bg-gray-800">
-      <h1 class="text-xl font-bold">Rantian Imperium</h1>
-      <nav class="space-x-4">
-        <a href="index.html" class="hover:underline" :class="isActive('index.html')">Home</a>
-        <a href="gallery.html" class="hover:underline font-semibold text-blue-600 dark:text-blue-400" :class="isActive('gallery.html')">Gallery</a>
-        <button @click="toggleDarkMode" class="ml-4 text-2xl focus:outline-none">
-          <span x-show="!darkMode" class="block">🌞</span>
-          <span x-show="darkMode" class="block">🌙</span>
-        </button>
-      </nav>
+  <body x-data="app()" x-init="init()" :class="{ 'dark': darkMode }" class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-all duration-300">
+
+    <!-- NAVIGATION -->
+    <header class="bg-gray-200 dark:bg-gray-800 shadow">
+      <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">Rantian Imperium</h1>
+        <nav class="flex gap-4 items-center">
+          <a href="index.html" class="hover:underline" :class="{ 'font-bold underline': currentPage === 'index' }">Home</a>
+          <a href="gallery.html" class="hover:underline" :class="{ 'font-bold underline': currentPage === 'gallery' }">Gallery</a>
+          <button @click="toggleDark()" class="ml-4 text-xl">
+            <template x-if="!darkMode">
+              <span title="Enable Dark Mode">🌙</span>
+            </template>
+            <template x-if="darkMode">
+              <span title="Disable Dark Mode">☀️</span>
+            </template>
+          </button>
+        </nav>
+      </div>
     </header>
 
-    <!-- Gallery Section -->
-    <main class="max-w-7xl mx-auto p-6" x-data="galleryApp()" x-init="loadSpecialists()">
-      <h2 class="text-2xl font-semibold mb-6 text-center">Specialist Gallery</h2>
+    <!-- FORM CONTENT -->
+    <main class="max-w-2xl mx-auto mt-10 px-4" x-data="formApp">
+      <h2 class="text-2xl font-bold mb-6">Join the Specialist Roster</h2>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <template x-for="item in specialists" :key="item.name">
-          <div class="relative bg-yellow-100 dark:bg-yellow-900 text-gray-800 dark:text-gray-100 border-4 border-yellow-400 dark:border-yellow-700 rounded-xl shadow-lg overflow-hidden">
-            <!-- Frame overlay (simulate Anno item frame) -->
-            <div class="relative">
-              <img :src="item.image" :alt="item.name" class="w-full h-40 object-cover" />
-              <div class="absolute inset-0 border-4 border-yellow-300 dark:border-yellow-600 rounded-xl pointer-events-none"></div>
+      <!-- Username -->
+      <template x-if="step === 'username'">
+        <div>
+          <label class="block mb-2 font-medium">Enter your username:</label>
+          <input type="text" x-model="username" class="w-full p-2 border rounded mb-4 dark:bg-gray-800" />
+          <button @click="startForm" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Start</button>
+        </div>
+      </template>
+
+      <!-- Question Display -->
+      <template x-if="step === 'form'">
+        <div>
+          <p class="mb-4 text-lg font-semibold" x-text="currentQuestion.text"></p>
+
+          <!-- Choice Type -->
+          <template x-if="currentQuestion.type === 'choice'">
+            <div>
+              <template x-for="opt in currentQuestion.options" :key="opt.label">
+                <button
+                  class="block w-full text-left bg-gray-200 dark:bg-gray-700 hover:bg-green-300 dark:hover:bg-green-600 px-4 py-2 mb-2 rounded"
+                  @click="selectOption(opt)"
+                  x-text="opt.label"
+                ></button>
+              </template>
             </div>
-            <div class="p-4">
-              <h3 class="text-lg font-bold text-yellow-800 dark:text-yellow-200" x-text="item.name"></h3>
-              <p class="text-sm italic mb-2" x-text="item.description"></p>
-              <ul class="text-sm list-disc list-inside text-green-700 dark:text-green-400">
-                <template x-for="stat in item.stats">
-                  <li x-text="stat"></li>
-                </template>
-              </ul>
+          </template>
+
+          <!-- Input Type -->
+          <template x-if="currentQuestion.type === 'input'">
+            <div>
+              <input type="text" x-model="inputValue" class="w-full p-2 border rounded dark:bg-gray-800 mb-2" />
+              <button @click="submitInput" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Next</button>
             </div>
-          </div>
-        </template>
-      </div>
+          </template>
+        </div>
+      </template>
+
+      <!-- Output -->
+      <template x-if="step === 'output'">
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold mb-2">Your Specialist Formatted:</h2>
+          <textarea readonly x-text="result" x-ref="resultText" class="w-full h-60 p-3 border rounded bg-gray-100 dark:bg-gray-800 mb-2"></textarea>
+          <button @click="copyResult" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Copy to Clipboard</button>
+          <p x-show="copied" x-transition class="text-green-500 mt-2">Copied!</p>
+        </div>
+      </template>
     </main>
 
-    <!-- Alpine Scripts -->
+    <!-- SCRIPT -->
     <script>
-      function themeToggle() {
+      function app() {
         return {
           darkMode: false,
-          init() {
-            this.darkMode = localStorage.getItem('darkMode') === 'true';
-            this.applyTheme();
-          },
-          toggleDarkMode() {
+          currentPage: 'index',
+          toggleDark() {
             this.darkMode = !this.darkMode;
             localStorage.setItem('darkMode', this.darkMode);
-            this.applyTheme();
-          },
-          applyTheme() {
             document.documentElement.classList.toggle('dark', this.darkMode);
           },
-          isActive(page) {
-            return window.location.pathname.includes(page)
-              ? 'underline font-bold'
-              : '';
-          },
+          init() {
+            this.darkMode = localStorage.getItem('darkMode') === 'true';
+            document.documentElement.classList.toggle('dark', this.darkMode);
+            this.currentPage = location.pathname.includes('gallery') ? 'gallery' : 'index';
+          }
         };
       }
 
-      function galleryApp() {
+      function formApp() {
         return {
-          specialists: [],
-          async loadSpecialists() {
+          step: 'username',
+          username: '',
+          currentQuestionId: null,
+          inputValue: '',
+          answers: [],
+          copied: false,
+          questions: {},
+
+          async loadQuestions() {
             try {
-              const res = await fetch('specialists.json');
-              this.specialists = await res.json();
+              const res = await fetch('risp-questions.json');
+              this.questions = await res.json();
             } catch (err) {
-              console.error('Failed to load specialists:', err);
+              alert('Failed to load risp-questions.json');
+              console.error(err);
             }
           },
+
+          get currentQuestion() {
+            return this.questions[this.currentQuestionId] || {};
+          },
+
+          startForm() {
+            if (!this.username.trim()) return;
+            this.answers = [];
+            this.inputValue = '';
+            this.currentQuestionId = 'q1';
+            this.step = 'form';
+          },
+
+          selectOption(option) {
+            this.answers.push({
+              question: this.currentQuestion.text,
+              options: this.currentQuestion.options,
+              selected: option.label
+            });
+            if (option.next === 'end') {
+              this.step = 'output';
+            } else {
+              this.currentQuestionId = option.next;
+            }
+          },
+
+          submitInput() {
+            if (!this.inputValue.trim()) return;
+            this.answers.push({
+              question: this.currentQuestion.text,
+              options: null,
+              selected: this.inputValue.trim()
+            });
+            if (this.currentQuestion.next === 'end') {
+              this.step = 'output';
+            } else {
+              this.currentQuestionId = this.currentQuestion.next;
+              this.inputValue = '';
+            }
+          },
+
+          get result() {
+            let output = '```\n' + this.username + '\n\n';
+            this.answers.forEach((a) => {
+              output += a.question + '\n';
+              if (a.options) {
+                a.options.forEach(opt => {
+                  output += `${opt.label === a.selected ? '✅' : '⬜'} ${opt.label}\n`;
+                });
+              } else {
+                output += `➡️ ${a.selected}\n`;
+              }
+              output += '\n';
+            });
+            output += '```';
+            return output;
+          },
+
+          copyResult() {
+            navigator.clipboard.writeText(this.result).then(() => {
+              this.copied = true;
+              setTimeout(() => this.copied = false, 2000);
+            });
+          },
+
+          init() {
+            this.loadQuestions();
+          }
         };
       }
     </script>
