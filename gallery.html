@@ -33,56 +33,10 @@
       </div>
     </header>
 
-    <!-- FORM CONTENT -->
-    <main class="max-w-2xl mx-auto mt-10 px-4" x-data="formApp">
-      <h2 class="text-2xl font-bold mb-6">Join the Specialist Roster</h2>
-
-      <!-- Username -->
-      <template x-if="step === 'username'">
-        <div>
-          <label class="block mb-2 font-medium">Enter your username:</label>
-          <input type="text" x-model="username" class="w-full p-2 border rounded mb-4 dark:bg-gray-800" />
-          <button @click="startForm" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Start</button>
-        </div>
-      </template>
-
-      <!-- Question Display -->
-      <template x-if="step === 'form'">
-        <div>
-          <p class="mb-4 text-lg font-semibold" x-text="currentQuestion.text"></p>
-
-          <!-- Choice Type -->
-          <template x-if="currentQuestion.type === 'choice'">
-            <div>
-              <template x-for="opt in currentQuestion.options" :key="opt.label">
-                <button
-                  class="block w-full text-left bg-gray-200 dark:bg-gray-700 hover:bg-green-300 dark:hover:bg-green-600 px-4 py-2 mb-2 rounded"
-                  @click="selectOption(opt)"
-                  x-text="opt.label"
-                ></button>
-              </template>
-            </div>
-          </template>
-
-          <!-- Input Type -->
-          <template x-if="currentQuestion.type === 'input'">
-            <div>
-              <input type="text" x-model="inputValue" class="w-full p-2 border rounded dark:bg-gray-800 mb-2" />
-              <button @click="submitInput" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Next</button>
-            </div>
-          </template>
-        </div>
-      </template>
-
-      <!-- Output -->
-      <template x-if="step === 'output'">
-        <div class="mt-6">
-          <h2 class="text-xl font-semibold mb-2">Your Specialist Formatted:</h2>
-          <textarea readonly x-text="result" x-ref="resultText" class="w-full h-60 p-3 border rounded bg-gray-100 dark:bg-gray-800 mb-2"></textarea>
-          <button @click="copyResult" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Copy to Clipboard</button>
-          <p x-show="copied" x-transition class="text-green-500 mt-2">Copied!</p>
-        </div>
-      </template>
+    <!-- Main content -->
+    <main class="max-w-6xl mx-auto p-4">
+      <h2 class="text-2xl font-semibold text-center mb-6">Specialist Gallery</h2>
+      <div id="specialists" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
     </main>
 
     <!-- SCRIPT -->
@@ -102,96 +56,30 @@
             this.currentPage = location.pathname.includes('gallery') ? 'gallery' : 'index';
           }
         };
-      }
 
-      function formApp() {
-        return {
-          step: 'username',
-          username: '',
-          currentQuestionId: null,
-          inputValue: '',
-          answers: [],
-          copied: false,
-          questions: {},
-
-          async loadQuestions() {
-            try {
-              const res = await fetch('risp-questions.json');
-              this.questions = await res.json();
-            } catch (err) {
-              alert('Failed to load risp-questions.json');
-              console.error(err);
-            }
-          },
-
-          get currentQuestion() {
-            return this.questions[this.currentQuestionId] || {};
-          },
-
-          startForm() {
-            if (!this.username.trim()) return;
-            this.answers = [];
-            this.inputValue = '';
-            this.currentQuestionId = 'q1';
-            this.step = 'form';
-          },
-
-          selectOption(option) {
-            this.answers.push({
-              question: this.currentQuestion.text,
-              options: this.currentQuestion.options,
-              selected: option.label
+        // Load specialists
+        fetch('specialists.json')
+          .then(res => res.json())
+          .then(data => {
+            const container = document.getElementById('specialists');
+            data.forEach(spec => {
+              const card = document.createElement('div');
+              card.className = 'bg-yellow-800/90 dark:bg-yellow-800/90 rounded-lg border-4 border-yellow-500 shadow-md p-4 text-white';
+              card.innerHTML = `
+                <div class="w-full h-40 bg-yellow-900 mb-3 flex items-center justify-center text-sm italic text-gray-200">${spec.name}</div>
+                <h3 class="text-lg font-bold mb-1">${spec.name}</h3>
+                <p class="italic mb-2 text-gray-200">${spec.description}</p>
+                <ul class="text-green-400 list-disc pl-5 space-y-1">
+                  ${spec.stats.map(stat => `<li>${stat}</li>`).join('')}
+                </ul>
+              `;
+              container.appendChild(card);
             });
-            if (option.next === 'end') {
-              this.step = 'output';
-            } else {
-              this.currentQuestionId = option.next;
-            }
-          },
-
-          submitInput() {
-            if (!this.inputValue.trim()) return;
-            this.answers.push({
-              question: this.currentQuestion.text,
-              options: null,
-              selected: this.inputValue.trim()
-            });
-            if (this.currentQuestion.next === 'end') {
-              this.step = 'output';
-            } else {
-              this.currentQuestionId = this.currentQuestion.next;
-              this.inputValue = '';
-            }
-          },
-
-          get result() {
-            let output = '```\n' + this.username + '\n\n';
-            this.answers.forEach((a) => {
-              output += a.question + '\n';
-              if (a.options) {
-                a.options.forEach(opt => {
-                  output += `${opt.label === a.selected ? '✅' : '⬜'} ${opt.label}\n`;
-                });
-              } else {
-                output += `➡️ ${a.selected}\n`;
-              }
-              output += '\n';
-            });
-            output += '```';
-            return output;
-          },
-
-          copyResult() {
-            navigator.clipboard.writeText(this.result).then(() => {
-              this.copied = true;
-              setTimeout(() => this.copied = false, 2000);
-            });
-          },
-
-          init() {
-            this.loadQuestions();
-          }
-        };
+          })
+          .catch(err => {
+            console.error('Failed to load specialists.json', err);
+            document.getElementById('specialists').textContent = 'Failed to load specialists.';
+          });
       }
     </script>
   </body>
