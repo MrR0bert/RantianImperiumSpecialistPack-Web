@@ -42,9 +42,33 @@
     <!-- SCRIPT -->
     <script>
       function app() {
-        return {
+        // Load specialists
+        fetch('default-specialists.json')
+          .then(res => res.json())
+          .then(data => {
+            const container = document.getElementById('specialists');
+            data.forEach(spec => {
+              const card = document.createElement('div');
+              card.className = 'bg-yellow-800/90 dark:bg-yellow-800/90 rounded-lg border-4 border-yellow-500 shadow-md p-4 text-white';
+              card.innerHTML = `
+                <div class="w-full h-40 bg-yellow-900 mb-3 flex items-center justify-center text-sm italic text-gray-200">${spec.name}</div>
+                <h3 class="text-lg font-bold mb-1">${spec.name}</h3>
+                <p class="italic mb-2 text-gray-200">${spec.category}</p>
+                <ul class="text-green-400 list-disc pl-5 space-y-1">
+                  ${spec.effect.split(";").map(stat => `<li>${stat}</li>`).join('')}
+                </ul>
+              `;
+              container.appendChild(card);
+            });
+          })
+          .catch(err => {
+            console.error('Failed to load specialists.json', err);
+            document.getElementById('specialists').textContent = 'Failed to load specialists.';
+          });
+
+          return {
           darkMode: false,
-          currentPage: 'index',
+          currentPage: 'gallery',
           toggleDark() {
             this.darkMode = !this.darkMode;
             localStorage.setItem('darkMode', this.darkMode);
@@ -56,30 +80,6 @@
             this.currentPage = location.pathname.includes('gallery') ? 'gallery' : 'index';
           }
         };
-
-        // Load specialists
-        fetch('specialists.json')
-          .then(res => res.json())
-          .then(data => {
-            const container = document.getElementById('specialists');
-            data.forEach(spec => {
-              const card = document.createElement('div');
-              card.className = 'bg-yellow-800/90 dark:bg-yellow-800/90 rounded-lg border-4 border-yellow-500 shadow-md p-4 text-white';
-              card.innerHTML = `
-                <div class="w-full h-40 bg-yellow-900 mb-3 flex items-center justify-center text-sm italic text-gray-200">${spec.name}</div>
-                <h3 class="text-lg font-bold mb-1">${spec.name}</h3>
-                <p class="italic mb-2 text-gray-200">${spec.description}</p>
-                <ul class="text-green-400 list-disc pl-5 space-y-1">
-                  ${spec.stats.map(stat => `<li>${stat}</li>`).join('')}
-                </ul>
-              `;
-              container.appendChild(card);
-            });
-          })
-          .catch(err => {
-            console.error('Failed to load specialists.json', err);
-            document.getElementById('specialists').textContent = 'Failed to load specialists.';
-          });
       }
     </script>
   </body>

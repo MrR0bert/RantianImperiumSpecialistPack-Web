@@ -1,0 +1,672 @@
+{
+  "TownHallItems": [
+    {
+      "name": "Abbé",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Range: +10% on churches; +10 Faith",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Alcohol Crate",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Chance of Riots: -40%; +3 Diplomacy; +3 Medicine",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Antiseptics",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Chance of Illness: -40%; +4 Medicine",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Bartender",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences: Happiness +3; +10 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Black Powder Fireworks",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences (activated): Happiness +7; +2 Diplomacy; +1 Naval Power",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Fellow",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences: Income per house +5%; +10 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Foam Extinguisher",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "All Buildings (activated): Chance of Fire -40%; +1 Force",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Fool",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences: Provided Variety Theatre need; +10 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Governess",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences: Provided School need; +5 Faith",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Grocer",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences: Provided Market need; +5 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Housemaid",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences: Provided Members Club need; +5 Force; +5 Medicine",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Intoxicator",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences (with Pub): Provides Schnapps; +10 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Lender",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences: Provided Bank need; +5 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Nurse",
+      "category": "Town Hall",
+      "rarity": "Common",
+      "effects": "Residences: Chance of Illness -20%; +15 Medicine",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "\"Freedom For All\" Poster",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Residences: Income -10%; Chance of Riots -20%; +5 Diplomacy",
+      "source": "Quest reward (The Anarchist DLC)",
+      "dlc": "The Anarchist"
+    },
+    {
+      "name": "A Study For Men",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Residences: Happiness +6; -5% Workforce; +10% Chance of Riots",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Amnesty on Religious Symbology",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Residences: Happiness +4; +10% Chance of Riots",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Anti-Bourgeois Gas Pipe",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Engineers/Investors (activated): +20% Income; +100% Chance of Fire; +10 Force",
+      "source": "Quest reward (The Anarchist DLC)",
+      "dlc": "The Anarchist"
+    },
+    {
+      "name": "Anti-Clerical Lecturer",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Worker/Artisan Residences: Provide Church need to Schools/Universities; +20 Faith",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Armagnac Bottles",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Residences (activated): Happiness +5; provides Beer, Schnapps, Champagne, Rum",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Associate Professor of Faculty",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Scholar Residences: +1 Research Point; +10 Diplomacy",
+      "source": "Quest reward (Land of Lions DLC)",
+      "dlc": "Land of Lions"
+    },
+    {
+      "name": "Bank Holiday Decree",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Residences: Happiness +4; -5% Workforce",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Banker",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Residences: +5 Happiness; +5 Income (with Bank); +10 Diplomacy",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Bicycle Repair Kit",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Residences (activated): Happiness +5; provides Penny Farthings; +5 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Big Alcohol Crate",
+      "category": "Town Hall",
+      "rarity": "Uncommon",
+      "effects": "Residences (activated): Chance of Riots -60%; +1 Diplomacy; +1 Medicine",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "A Note From the Queen",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "Iron Tower Restaurants: Maintenance Cost -15%; Attractiveness +75",
+      "source": "Quest reward (Tourist Season DLC)",
+      "dlc": "Tourist Season"
+    },
+    {
+      "name": "A Vindication of Women's Rights",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "Residences: +12 Happiness; +10% Workforce; -20% Chance of Riots",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Actor",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "Old World Residences: +3 Happiness; provides Rum and Canned Food (with Variety Theatre); +20 Diplomacy; +20 Faith",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "An Anarchist: A Self-Portrait",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "Residences: +10 Happiness; -10% Income; +25% Workforce",
+      "source": "Quest reward (The Anarchist DLC)",
+      "dlc": "The Anarchist"
+    },
+    {
+      "name": "An Essay on Birth Control",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "Residences: +7 Happiness; -15% Workforce; -50% Chance of Riots",
+      "source": "Quest reward (The Anarchist DLC)",
+      "dlc": "The Anarchist"
+    },
+    {
+      "name": "Anti-Bourgeois Cocktail",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "Engineers/Investors (activated): +40% Income; +30 Force",
+      "source": "Quest reward (The Anarchist DLC)",
+      "dlc": "The Anarchist"
+    },
+    {
+      "name": "Art and Craft Festival Poster",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "Bank/Marketplace: Maintenance Cost +10%; Attractiveness +7",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Beatific Bishopess",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "Churches: +7 Attractiveness; +15% Range; +30 Faith; +10 Medicine",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Blue Skies Janitor",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "All Skyscrapers: Maintenance Cost -10%; -30% Fire; -30% Illness; -30% Riots; +15 Crafting; +2 Diplomacy",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Blue Skies Maid",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "All Skyscrapers: Maintenance Cost +15%; +5 Bonus Residents (with various goods); +20 Happiness",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Boy's Choir Flyer",
+      "category": "Town Hall",
+      "rarity": "Rare",
+      "effects": "Churches/Chapels/Schools: Maintenance Cost +5%; Attractiveness +5",
+      "source": "Base game",
+      "dlc": null
+    }
+  ],
+  "TradeUnionItems": [
+    {
+      "name": "Bag of Money",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "All Production (activated): Chance of Riots -40%; +4 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Baker",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Bakery: processes Grain instead of Flour",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Bean Sifter",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Coffee Roasters: Workforce -20%; +5 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Boilermaker",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Steelworks: Maintenance Cost -30%; +10 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Burner",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Charcoal Kiln: Productivity +10%; +10 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Butcher",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Slaughterhouse: Workforce -20%; +5 Force",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Canner",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Cannery: Workforce -20%; +5 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Carpenter",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "All Carpentry Works: occasionally produces extra Wood; +15 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Cellar Man",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Champagne Cellar: Workforce -25%; +10 Medicine",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Chandler",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Soap Factory: Maintenance Cost -20%; +10 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Confectioner",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Chocolate/Cocoa/Sugar production: Productivity +10%; +10 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Cropper",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Grain/Red Pepper Farms: Productivity +10%; +10 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Digger",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Mines: Productivity +10%; +5 Crafting; +5 Force",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Driller",
+      "category": "Trade Union",
+      "rarity": "Common",
+      "effects": "Mines: Productivity +10%; +5 Crafting; +5 Force",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Adjustable Mannequin",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Tailor's Shop: Productivity +20%",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Agriculturalist",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Farms/Plantations: Productivity +12%; +20 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Aldea, the Forest Warden",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Lumberjack's Hut/Woodcutter: +3 Attractiveness",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Beryl's Fosterling",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Coachmakers/Lumberjacks: Productivity +50%; +20 Crafting",
+      "source": "Quest reward (Land of Lions DLC)",
+      "dlc": "Land of Lions"
+    },
+    {
+      "name": "Bespoke Tailor",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Bootmakers/Ball Manufactory: Workforce -50%; +10 Crafting",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Big Bag of Money",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "All Production (activated): Chance of Riots -60%; +1 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Big Box of Dynamite",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Mines (activated): Productivity +200%; +5 Force; +4 Naval Power",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Birdhouse",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Enbesa Crop Farms: Productivity +20%; +20% Maintenance Cost",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Bow Saw",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Lumberjack's Hut: Productivity +25%; +10 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Brickmaker",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Brick Factory/Dry-House: Maintenance Cost -100%; +20 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Calciner",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Ironworks/Foundries: Productivity +40%; Attractiveness -3; Chance of Fire +50%",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Cane Saplings",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Sugar Cane Plantations: Productivity -15%; provides Sugar Cane Fertility",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Caoutchouc Saplings",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Caoutchouc Plantations: Productivity -15%; provides Caoutchouc Fertility",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Careful Craftsman",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Ceramics/Pipe Maker/Tapestry Looms: Chance of Fire -60%; +15 Crafting; +5 Medicine",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Cementer",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Concrete Factory: uses Clay instead of Cement; +20 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Certificate of Inspection",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "All Production: Maintenance Cost -10%; Chance of Fire +20%",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Champagne Taster",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Champagne Cellar: Productivity +20%; +20 Medicine",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Chocolatier",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Chocolate Factory: substitutes Jornalero workforce; +20 Crafting",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Circular Saw",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Carpentry: Productivity +30%; Chance of Fire +30%; +20 Crafting",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Clockmaker",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Clockmakers: Maintenance Cost -20%; +20 Crafting",
+      "source": "Base game",
+      "dlc": null
+    },
+    {
+      "name": "Coal Permit",
+      "category": "Trade Union",
+      "rarity": "Uncommon",
+      "effects": "Ironworks/Foundries: (no direct stat bonus); +20 Crafting",
+      "source": "Base game",
+      "dlc": null
+    }
+  ],
+  "HarbourmasterItems": [
+    {
+      "name": "Angler",
+      "category": "Harbourmaster",
+      "rarity": "Common",
+      "effects": "Fisheries: Productivity +10%; +10 Hunting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Bruiser",
+      "category": "Harbourmaster",
+      "rarity": "Common",
+      "effects": "Trading Posts/Piers: Harbour Activity +10%; chance to gain Grain/Hops/Potatoes/Grapes/Red Peppers; +10 Diplomacy",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Carpenter",
+      "category": "Harbourmaster",
+      "rarity": "Common",
+      "effects": "Shipyards: Maintenance Cost -25%; +10 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Carpenter's Tools",
+      "category": "Harbourmaster",
+      "rarity": "Common",
+      "effects": "Harbour Buildings (activated): Self-Repair +200%; Active Healing; +6 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Deep Blue Ship Blueprints",
+      "category": "Harbourmaster",
+      "rarity": "Common",
+      "effects": "Steam Shipyard: adds ability to construct World-Class Reefer",
+      "source": "Quest reward (Docklands DLC)",
+      "dlc": "Docklands"
+    },
+    {
+      "name": "Diver",
+      "category": "Harbourmaster",
+      "rarity": "Common",
+      "effects": "Pearl Farm: Productivity +10%; +10 Hunting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Guide",
+      "category": "Harbourmaster",
+      "rarity": "Common",
+      "effects": "Public Moorings: Attractiveness +15; +10 Navigation",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Gunner",
+      "category": "Harbourmaster",
+      "rarity": "Common",
+      "effects": "Defense Turrets: Hitpoints +200; +5 Force; +15 Naval Power",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Artillerywoman",
+      "category": "Harbourmaster",
+      "rarity": "Uncommon",
+      "effects": "Defense Turrets: Self-Repair +300%; +10 Force; +25 Naval Power",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Builder's Tools",
+      "category": "Harbourmaster",
+      "rarity": "Uncommon",
+      "effects": "Harbour Buildings (activated): Self-Repair +300%; Active Healing; +8 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Dockyard Toolbox",
+      "category": "Harbourmaster",
+      "rarity": "Uncommon",
+      "effects": "Harbour Buildings: Maintenance Cost +15%; Self-Repair +50%; +20 Crafting",
+      "source": "Expedition reward",
+      "dlc": null
+    },
+    {
+      "name": "Fine Fishing Net",
+      "category": "Harbourmaster",
+      "rarity": "Uncommon",
+      "effects": "Fisheries/Pearl Farm: Productivity +25%; +15 Hunting",
+      "source": "Expedition reward",
+      "dlc": null
+    }
+  ]
+}
