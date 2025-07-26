@@ -47,7 +47,7 @@
           .then(res => res.json())
           .then(data => {
             const container = document.getElementById('specialists');
-            data.forEach(spec => {
+            data.TownHallItems.forEach(spec => {
               const card = document.createElement('div');
               card.className = 'bg-yellow-800/90 dark:bg-yellow-800/90 rounded-lg border-4 border-yellow-500 shadow-md p-4 text-white';
               card.innerHTML = `
